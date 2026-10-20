@@ -19,6 +19,8 @@ Principios innegociables. Toda spec, plan, tarea, revisión y validación debe c
    dueño que lo libera exactamente una vez: la lista es dueña de los datos; el árbol, solo de su índice.
 6. **Pruebas como puerta.** Cada RF tiene al menos un caso en `casos-prueba.md`, y cada caso tiene el
    mismo ID en el código de pruebas. Una tarea no se marca hecha con casos en FALLA.
-7. **El código lo escriben las personas.** Los agentes revisan specs y código, compilan, ejecutan pruebas
-   y registran resultados. Nunca editan archivos `.c` ni `.h` ni escriben la solución: señalan el
-   problema y la regla que incumple.
+7. **El programa lo escriben las personas; las pruebas, los agentes.** Los agentes escriben el código de
+   prueba (`pruebas/*.c` y `pruebas/verificar.h`) a partir de `casos-prueba.md` y `docs/primitivas.md`,
+   revisan specs y código, compilan, ejecutan pruebas y registran resultados. Nunca editan los `.c` ni
+   `.h` de `tda/`, `cache/`, `dominio/`, `sim/` ni `apps/`, ni escriben la solución: señalan el problema
+   y la regla que incumple.

@@ -65,5 +65,6 @@ estudiar": hasta 3 conceptos del parcial que aparecieron en la revisión.
 ## En Claude Code
 - Escribí cada `gcc` con los flags literales de `AGENTS.md`, sin variables de shell (`$REPO`, `$INC`): así
   coinciden con los permisos de `.claude/settings.json` y no piden aprobación.
-- Las reglas del proyecto bloquean editar `.c` y `.h`. No intentes esquivarlas con comandos de shell
-  (`echo >`, `sed -i`, `cp`): sería violar el principio 7 de la constitución.
+- Las reglas del proyecto bloquean editar los `.c` y `.h` del programa (solo `pruebas/` es editable, y no
+  es tarea de este agente). No intentes esquivarlas con comandos de shell (`echo >`, `sed -i`, `cp`):
+  sería violar el principio 7 de la constitución.

@@ -1,8 +1,8 @@
 # AGENTS.md — TP LRU Cache (AyED, UNLaM)
 
 TP grupal en C: TDA LRU Cache genérico con lista simple (Parte 1), lista doble + ABB índice (Parte 2) y
-simulación de la red social "Tweener" (Parte 3). El código lo escriben las personas; los agentes
-revisan specs y código y validan las specs. Nunca escriben la solución.
+simulación de la red social "Tweener" (Parte 3). El programa lo escriben las personas; los agentes
+escriben las pruebas (`pruebas/`), revisan specs y código y validan las specs. Nunca escriben la solución.
 
 ## Antes de cualquier tarea
 - Leé `docs/constitution.md`, `MEMORY.md` y la spec activa (`specs/NNN-*/`).
@@ -40,7 +40,10 @@ solo existe en GCC de Linux (no en MinGW); si no está, se informa y se sigue.
 - ✅ Siempre: compilar en las dos configuraciones antes de opinar sobre código, y citar en cada
   observación la regla que se incumple (principio, sección de la skill o primitiva).
 - ⚠ Preguntá antes: cualquier cambio en `spec.md`, `plan.md` o `docs/` (lo aprueba el grupo).
-- 🚫 Nunca: editar `.c` o `.h`, escribir la solución, marcar casillas de `tasks.md`.
+- ✅ Permitido: escribir y corregir `pruebas/*.c` y `pruebas/verificar.h`, siempre fieles a
+  `casos-prueba.md` (mismo ID y mismos valores) y a `docs/primitivas.md`.
+- 🚫 Nunca: editar `.c` o `.h` de `tda/`, `cache/`, `dominio/`, `sim/` o `apps/`, escribir la solución,
+  marcar casillas de `tasks.md`.
 
 ## Memoria
 - `MEMORY.md` guarda el estado y las decisiones que afectan a todo el proyecto. Lo mantienen las

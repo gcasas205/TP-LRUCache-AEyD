@@ -1,7 +1,7 @@
 # Tareas — Spec 003
 
-Las implementa la Persona 3, a mano y en orden. En cada tarea: primero los casos en `pruebas_003.c` (en
-FALLA), después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
+Las implementa la Persona 3, a mano y en orden. En cada tarea: los casos ya están en `pruebas_003.c` (los
+escribe un agente y dan FALLA); después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
 
 - [ ] **T1. Congelar `arbol.h` y `cache.h` según `docs/primitivas.md`.** Todos los RF
   - Hecho cuando: el grupo los aprobó y compilan con stubs en las dos configuraciones.

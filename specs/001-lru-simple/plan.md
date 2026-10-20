@@ -11,7 +11,7 @@ Parte de la spec 001 en borrador; se ajusta cuando se apruebe. Las firmas y reto
 | `tda/lista.h` / `.c` | Lista simple genérica: insertar al principio, buscar por dato parcial, llevar al principio, ver el primero, sacar por clave, sacar el último, recorrer, vaciar | `comun.h` |
 | `cache/entrada.h` / `.c` | Armar el bloque `[clave][valor]` y copiar el valor de un bloque | `comun.h` |
 | `cache/lru_simple.h` / `.c` | `tLruS` y sus cinco primitivas | `lista`, `entrada` |
-| `pruebas/verificar.h` | Macro `VERIFICAR(condición, id, descripción)` que imprime `[OK]` / `[FALLA]` y cuenta (la usan las 4 specs) | — |
+| `pruebas/verificar.h` / `.c` | `verificarCond`, `verificarInt`, `verificarTexto` imprimen `[OK]` / `[FALLA] (esperado ..., obtenido ...)` y cuentan; `imprimirResumen` imprime `RESUMEN:` y devuelve las fallas (la usan las 4 specs) | — |
 | `pruebas/pruebas_001.c` | `int pruebas001(void)`: todos los casos de `casos-prueba.md`; devuelve la cantidad de fallas | `lru_simple`, `lista`, `entrada` |
 
 ## Cómo resuelve cada operación (sin código)
@@ -38,7 +38,7 @@ Parte de la spec 001 en borrador; se ajusta cuando se apruebe. Las firmas y reto
 ## Estrategia de pruebas
 
 - Primero las primitivas de la lista (L01 a L14), después la caché (01 a 23).
-- Cada caso se escribe en `pruebas_001.c` **antes** del código que lo hace pasar.
+- Un agente escribe todos los casos en `pruebas_001.c` **antes** del código; la persona escribe el código que los hace pasar.
 - Los valores de prueba son distintos entre sí ("A", "B", "Z", longitudes diferentes) para que un dato
   perdido o cruzado se note.
 - Los casos 24 y 25 son de revisión: los verifica `/revisar 001` y el sanitizer en `/validar 001`.

@@ -1,11 +1,11 @@
 # Tareas — Spec 001
 
-Las implementa la Persona 1, a mano y en orden. En cada tarea: primero los casos en `pruebas_001.c` (en
-FALLA), después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
+Las implementa la Persona 1, a mano y en orden. En cada tarea: los casos ya están en `pruebas_001.c` (los
+escribe un agente y dan FALLA); después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
 
 - [ ] **T1. Congelar `comun.h`, `lista.h`, `entrada.h` y `lru_simple.h` según `docs/primitivas.md`.** Todos los RF
   - Hecho cuando: el grupo los aprobó y compilan con stubs en las dos configuraciones.
-- [ ] **T2. `verificar.h` y el esqueleto de `pruebas_001.c` y `main_pruebas.c`.** —
+- [ ] **T2. `main_pruebas.c` (llama a `pruebas001` y a `imprimirResumen`; `verificar` y `pruebas_001.c` los entrega el agente).** —
   - Hecho cuando: `bin/pruebas` imprime `RESUMEN:` y sale con 1 mientras haya casos en FALLA.
 - [ ] **T3. Lista: crear, vacía, insertar al principio, recorrer, vaciar.** —
   - Hecho cuando: CP-001-L01, L02 y L13 en OK.

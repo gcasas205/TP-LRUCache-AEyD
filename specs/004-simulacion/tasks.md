@@ -1,7 +1,7 @@
 # Tareas — Spec 004
 
-Las implementa la Persona 4, a mano y en orden. En cada tarea: primero los casos en `pruebas_004.c` (en
-FALLA), después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
+Las implementa la Persona 4, a mano y en orden. En cada tarea: los casos ya están en `pruebas_004.c` (los
+escribe un agente y dan FALLA); después el código, y las dos compilaciones de `AGENTS.md` sin warnings.
 
 - [ ] **T1. Congelar `posteo.h`, `usuario.h`, `generador.h`, `metricas.h`, `simulador.h` y `reporte.h`.** Todos los RF
   - Hecho cuando: el grupo los aprobó y compilan con stubs en las dos configuraciones.

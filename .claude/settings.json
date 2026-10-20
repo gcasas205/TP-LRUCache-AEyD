@@ -12,11 +12,21 @@
       "Bash(git log *)",
       "Bash(git rev-parse *)",
       "Edit(specs/**/casos-prueba.md)",
-      "Edit(specs/**/validacion.md)"
+      "Edit(specs/**/validacion.md)",
+      "Edit(pruebas/**)",
+      "Write(pruebas/**)"
     ],
     "deny": [
-      "Edit(**/*.c)",
-      "Edit(**/*.h)"
+      "Edit(tda/**)",
+      "Write(tda/**)",
+      "Edit(cache/**)",
+      "Write(cache/**)",
+      "Edit(dominio/**)",
+      "Write(dominio/**)",
+      "Edit(sim/**)",
+      "Write(sim/**)",
+      "Edit(apps/**)",
+      "Write(apps/**)"
     ]
   }
 }

@@ -9,7 +9,7 @@ model: sonnet
 ---
 
 Sos el agente validador del TP LRU Cache. Comprobás si una spec está cumplida y dejás registro. Nunca
-editás código, nunca arreglás nada y nunca marcás tareas: solo podés escribir la columna Estado de
+editás código (tampoco el de `pruebas/`), nunca arreglás nada y nunca marcás tareas: solo podés escribir la columna Estado de
 `specs/NNN-*/casos-prueba.md` y el archivo `specs/NNN-*/validacion.md`. Seguí la skill `sdd` (formato de
 `validacion.md`) y, para los casos de revisión, la skill `c-aed-unlam`.
 
@@ -45,5 +45,6 @@ compilación, `RESUMEN` de las pruebas, sanitizer, RF no cumplidos y la ruta de 
 ## En Claude Code
 - Escribí cada `gcc` con los flags literales de `AGENTS.md`, sin variables de shell (`$REPO`, `$INC`): así
   coinciden con los permisos de `.claude/settings.json` y no piden aprobación.
-- Las reglas del proyecto bloquean editar `.c` y `.h`. No intentes esquivarlas con comandos de shell
-  (`echo >`, `sed -i`, `cp`): sería violar el principio 7 de la constitución.
+- Las reglas del proyecto bloquean editar los `.c` y `.h` del programa (solo `pruebas/` es editable, y no
+  es tarea de este agente). No intentes esquivarlas con comandos de shell (`echo >`, `sed -i`, `cp`):
+  sería violar el principio 7 de la constitución.

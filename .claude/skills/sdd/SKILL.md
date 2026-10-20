@@ -15,8 +15,9 @@ Revisión → Validación → Cambio.
   por último al código.
 - Cada spec vive en `specs/NNN-nombre/` con `spec.md`, `plan.md`, `tasks.md`, `casos-prueba.md` y, cuando
   se valida, `validacion.md`.
-- **Los agentes nunca escriben ni editan `.c` o `.h`** (constitución, principio 7). Señalan el problema y
-  la regla; la persona lo arregla.
+- **Los agentes escriben solo las pruebas** (`pruebas/*.c`, `pruebas/verificar.h`), fieles a
+  `casos-prueba.md`; nunca los `.c` o `.h` del programa (constitución, principio 7). En el programa
+  señalan el problema y la regla; la persona lo arregla.
 
 ## Spec (`spec.md`)
 ```
@@ -80,7 +81,8 @@ RESUMEN: 41 OK, 1 FALLA
 ```
 
 ## Implementación (la hace la persona)
-Una tarea por vez: primero los casos de la tarea en `pruebas_NNN.c` (en FALLA), después el código hasta
+Una tarea por vez: los casos de la tarea ya están en `pruebas_NNN.c` (los escribe un agente y dan FALLA);
+la persona escribe el código hasta
 que pasen, las dos compilaciones de `AGENTS.md` sin warnings, y recién ahí se marca la tarea.
 
 ## Revisión (`/revisar NNN [archivo]`, agente `revisor`)
