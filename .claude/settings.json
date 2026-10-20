@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gcc *)",
+      "Bash(mkdir -p bin)",
+      "Bash(./bin/*)",
+      "Bash(ls *)",
+      "Bash(wc *)",
+      "Bash(cmp *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git rev-parse *)",
+      "Edit(specs/**/casos-prueba.md)",
+      "Edit(specs/**/validacion.md)"
+    ],
+    "deny": [
+      "Edit(**/*.c)",
+      "Edit(**/*.h)"
+    ]
+  }
+}

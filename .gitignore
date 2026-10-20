@@ -1,0 +1,14 @@
+# Binarios y objetos
+bin/*
+!bin/.gitkeep
+*.o
+*.exe
+
+# Datos generados (se regeneran con la semilla del informe)
+datos/*.dat
+
+# CodeBlocks
+obj/
+*.depend
+*.layout
+*.cbTemp
