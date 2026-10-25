@@ -49,6 +49,23 @@ static void anexar(char *texto, const char *agregado)
     strcat(texto, agregado);
 }
 
+// Nombre de los estados de lista de comun.h. Va aparte de nombreRetorno porque
+// LISTA_DISPONIBLE vale 0, igual que EXITO.
+static const char *nombreEstadoLista(int estado)
+{
+    switch(estado)
+    {
+        case LISTA_DISPONIBLE:
+            return "LISTA_DISPONIBLE";
+        case LISTA_VACIA:
+            return "LISTA_VACIA";
+        case LISTA_LLENA:
+            return "LISTA_LLENA";
+        default:
+            return "DESCONOCIDO";
+    }
+}
+
 // ---- lista
 
 static const char *nombreDe(int clave)
@@ -518,24 +535,23 @@ static void cpL01(void)
     tLista lista;
 
     crearLista(&lista);
-    verificarInt(1, listaVacia(&lista), "CP-001-L01", "lista recien creada esta vacia");
+    verificarTexto("LISTA_VACIA", nombreEstadoLista(listaVacia(&lista)), "CP-001-L01",
+                   "lista recien creada esta vacia");
 }
 
 static void cpL02(void)
 {
     tLista lista;
     char obt[TAM_TEXTO];
-    char item[16];
 
     crearLista(&lista);
     insertarReg(&lista, 3);
     insertarReg(&lista, 2);
     insertarReg(&lista, 1);
     recorrido(&lista, obt);
-    sprintf(item, "vacia=%d", listaVacia(&lista));
-    anexar(obt, item);
+    anexar(obt, nombreEstadoLista(listaVacia(&lista)));
     vaciarLista(&lista);
-    verificarTexto("1 2 3 vacia=0", obt, "CP-001-L02", "insertar 3, 2, 1 al principio");
+    verificarTexto("1 2 3 LISTA_DISPONIBLE", obt, "CP-001-L02", "insertar 3, 2, 1 al principio");
 }
 
 static void cpL03(void)
@@ -601,7 +617,7 @@ static void cpL09(void)
     tLista lista;
     tReg reg;
     char obt[TAM_TEXTO] = "";
-    char item[TAM_TEXTO];
+    char item[TAM_TEXTO + 64];  // entra rec completo mas el resto del formato
     char rec[TAM_TEXTO];
     int claves[] = {1, 2, 3, 4};
     int aSacar[] = {1, 3, 4};
@@ -698,8 +714,8 @@ static void cpL13(void)
     armarLista(&lista, claves, 5);
     primera = vaciarLista(&lista);
     segunda = vaciarLista(&lista);
-    sprintf(obt, "%d %d vacia=%d", primera, segunda, listaVacia(&lista));
-    verificarTexto("5 0 vacia=1", obt, "CP-001-L13", "vaciar 5 nodos y despues una vacia");
+    sprintf(obt, "%d %d %s", primera, segunda, nombreEstadoLista(listaVacia(&lista)));
+    verificarTexto("5 0 LISTA_VACIA", obt, "CP-001-L13", "vaciar 5 nodos y despues una vacia");
 }
 
 static void cpL14(void)
@@ -729,6 +745,26 @@ static void cpL14(void)
                    "crear entrada {7, \"hola\"} y copiar con buffer de 16 y de 2");
 }
 
+static void cpL15(void)
+{
+    tLista lista;
+    char obt[TAM_TEXTO];
+    char rec[TAM_TEXTO];
+    int claves[] = {1, 2, 3};
+    int antes;
+    int despues;
+
+    crearLista(&lista);
+    antes = listaLlena(&lista, sizeof(tReg));
+    vaciarLista(&lista);
+    armarLista(&lista, claves, 3);
+    despues = listaLlena(&lista, sizeof(tReg));
+    recorrido(&lista, rec);
+    vaciarLista(&lista);
+    sprintf(obt, "%s %s [%.200s]", nombreEstadoLista(antes), nombreEstadoLista(despues), rec);
+    verificarTexto("LISTA_DISPONIBLE LISTA_DISPONIBLE [1 2 3]", obt, "CP-001-L15", "lista llena en vacia y en 1 2 3, sin modificarla");
+}
+
 // ------------------------------------------------------- funcion de la spec
 
 int pruebas001(void)
@@ -752,6 +788,7 @@ int pruebas001(void)
     cpL12();
     cpL13();
     cpL14();
+    cpL15();
 
     // Cache (T7 a T9)
     cp01();

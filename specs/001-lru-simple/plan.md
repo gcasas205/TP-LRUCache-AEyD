@@ -8,7 +8,7 @@ Parte de la spec 001 en borrador; se ajusta cuando se apruebe. Las firmas y reto
 | Archivo | Responsabilidad | Usa |
 | --- | --- | --- |
 | `tda/comun.h` | Códigos de retorno, `MIN`, `tCmp`, `tAccion`. Lo incluyen todos los módulos | — |
-| `tda/lista.h` / `.c` | Lista simple genérica: insertar al principio, buscar por dato parcial, llevar al principio, ver el primero, sacar por clave, sacar el último, recorrer, vaciar | `comun.h` |
+| `tda/lista.h` / `.c` | Lista simple genérica: vacía y llena, insertar al principio, buscar por dato parcial, llevar al principio, ver el primero, sacar por clave, sacar el último, recorrer, vaciar | `comun.h` |
 | `cache/entrada.h` / `.c` | Armar el bloque `[clave][valor]` y copiar el valor de un bloque | `comun.h` |
 | `cache/lru_simple.h` / `.c` | `tLruS` y sus cinco primitivas | `lista`, `entrada` |
 | `pruebas/verificar.h` / `.c` | `verificarCond`, `verificarInt`, `verificarTexto` imprimen `[OK]` / `[FALLA] (esperado ..., obtenido ...)` y cuentan; `imprimirResumen` imprime `RESUMEN:` y devuelve las fallas (la usan las 4 specs) | — |

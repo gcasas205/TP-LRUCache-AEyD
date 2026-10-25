@@ -40,13 +40,13 @@ Se verifican con `recorrerListaD` (de `pri` a `ult`) y con `sacarUltListaD` repe
 
 | ID | Primitiva | Preparación | Acción | Esperado | Estado |
 | --- | --- | --- | --- | --- | --- |
-| CP-002-D01 | `crearListaD`, `listaVaciaD`, `verUltListaD` | — | crear; ver último | `listaVaciaD` = 1; `VACIA` | pendiente |
+| CP-002-D01 | `crearListaD`, `listaVaciaD`, `verUltListaD` | — | crear; ver último | `listaVaciaD` = `LISTA_VACIA`; `VACIA` | pendiente |
 | CP-002-D02 | `insPrinListaD` | vacía | insertar 7 | `EXITO`; posición no nula; ver último = 7 (`pri` y `ult` son el mismo nodo) | pendiente |
 | CP-002-D03 | `insPrinListaD`, `sacarUltListaD` | vacía | insertar 1, 2, 3; sacar último cuatro veces | recorrido 3 2 1; sacadas 1, 2, 3 y la cuarta `VACIA` | pendiente |
 | CP-002-D04 | `moverAlPrinListaD` | insertar 1, 2, 3 (recorrido 3 2 1), guardando las posiciones | mover la posición de 1 (el último) | recorrido 1 3 2; ver último = 2; sacar último ×3 da 2, 3, 1 | pendiente |
 | CP-002-D05 | `moverAlPrinListaD` | igual a D04 | mover la posición de 2 (del medio) | recorrido 2 3 1; sacar último ×3 da 1, 3, 2 | pendiente |
 | CP-002-D06 | `moverAlPrinListaD` | igual a D04 | mover la posición de 3 (el primero) | recorrido 3 2 1 sin cambios | pendiente |
 | CP-002-D07 | `sacarNodoListaD` | insertar 1, 2, 3, 4 (recorrido 4 3 2 1) | sacar 2 (medio), después 4 (primero), después 1 (último) | recorridos 4 3 1 → 3 1 → 3; ver último = 3 | pendiente |
-| CP-002-D08 | `sacarNodoListaD` | insertar 5 | sacar su posición | `EXITO`; `listaVaciaD` = 1; `verUltListaD` da `VACIA` | pendiente |
+| CP-002-D08 | `sacarNodoListaD` | insertar 5 | sacar su posición | `EXITO`; `listaVaciaD` = `LISTA_VACIA`; `verUltListaD` da `VACIA` | pendiente |
 | CP-002-D09 | `actualizarInfoListaD`, `verInfoListaD` | insertar "corto" | actualizar con "un texto mas largo"; ver con buffer 4 | `verInfoListaD` devuelve 19 y copia "un t"; la lista sigue con un nodo | pendiente |
-| CP-002-D10 | `vaciarListaD` | insertar 4 nodos; después vacía | vaciar dos veces | devuelve 4 y después 0; `listaVaciaD` = 1 | pendiente |
+| CP-002-D10 | `vaciarListaD` | insertar 4 nodos; después vacía | vaciar dos veces | devuelve 4 y después 0; `listaVaciaD` = `LISTA_VACIA` | pendiente |

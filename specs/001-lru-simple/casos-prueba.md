@@ -47,8 +47,8 @@ Cubren el plan, no un RF directo. Se prueban con `recorrerLista` imprimiendo las
 
 | ID | Primitiva | Preparación | Acción | Esperado | Estado |
 | --- | --- | --- | --- | --- | --- |
-| CP-001-L01 | `crearLista`, `listaVacia` | — | crear | `listaVacia` = 1 | pendiente |
-| CP-001-L02 | `insPrinLista` | vacía | insertar 3, 2, 1 al principio | recorrido: 1 2 3; `listaVacia` = 0 | pendiente |
+| CP-001-L01 | `crearLista`, `listaVacia` | — | crear | `listaVacia` = `LISTA_VACIA` | pendiente |
+| CP-001-L02 | `insPrinLista` | vacía | insertar 3, 2, 1 al principio | recorrido: 1 2 3; `listaVacia` = `LISTA_DISPONIBLE` | pendiente |
 | CP-001-L03 | `buscarLista` | 1 "uno", 2 "dos", 3 "tres" | buscar clave 2 | `EXITO`; registro {2, "dos"}; recorrido sigue 1 2 3 | pendiente |
 | CP-001-L04 | `buscarLista` | igual a L03; destino = {0, "XXX"} | buscar clave 9 | `NO_ENCONTRADO`; destino sigue {0, "XXX"} | pendiente |
 | CP-001-L05 | `llevarAlPrinLista` | 1 2 3 | llevar 2 | `EXITO`; recorrido 2 1 3 | pendiente |
@@ -59,5 +59,6 @@ Cubren el plan, no un RF directo. Se prueban con `recorrerLista` imprimiendo las
 | CP-001-L10 | `sacarPorClaveLista` | 1 2 | sacar 9; sacar 2 con `info = NULL` | `NO_ENCONTRADO`; después `EXITO`; recorrido 1 | pendiente |
 | CP-001-L11 | `sacarUltLista` | 1 2 3 | sacar último tres veces y una cuarta | 3, 2, 1 con `EXITO`; la cuarta `VACIA` | pendiente |
 | CP-001-L12 | `verPrimeroLista` | vacía, después 5 7 | ver primero en cada caso | `VACIA`; después `EXITO` con 5 | pendiente |
-| CP-001-L13 | `vaciarLista` | 5 nodos, después vacía | vaciar dos veces | devuelve 5 y después 0; `listaVacia` = 1 | pendiente |
+| CP-001-L13 | `vaciarLista` | 5 nodos, después vacía | vaciar dos veces | devuelve 5 y después 0; `listaVacia` = `LISTA_VACIA` | pendiente |
 | CP-001-L14 | `crearEntrada`, `copiarValorEntrada` | clave `int` 7, valor "hola" | crear entrada; copiar con buffer 16; copiar con buffer 2 | bloque de `sizeof(int) + 5`; primera copia "hola" y devuelve 5; segunda copia "ho" y devuelve 2 | pendiente |
+| CP-001-L15 | `listaLlena` | vacía, después 1 2 3 | preguntar si está llena con `sizeof(tReg)` antes y después de insertar | `LISTA_DISPONIBLE` las dos veces; la lista sigue 1 2 3 (no la modifica) | pendiente |

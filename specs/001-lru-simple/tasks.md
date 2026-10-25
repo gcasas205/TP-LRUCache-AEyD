@@ -7,8 +7,8 @@ escribe un agente y dan FALLA); después el código, y las dos compilaciones de 
   - Hecho cuando: el grupo los aprobó y compilan con stubs en las dos configuraciones.
 - [ ] **T2. `main_pruebas.c` (llama a `pruebas001` y a `imprimirResumen`; `verificar` y `pruebas_001.c` los entrega el agente).** —
   - Hecho cuando: `bin/pruebas` imprime `RESUMEN:` y sale con 1 mientras haya casos en FALLA.
-- [ ] **T3. Lista: crear, vacía, insertar al principio, recorrer, vaciar.** —
-  - Hecho cuando: CP-001-L01, L02 y L13 en OK.
+- [ ] **T3. Lista: crear, vacía, llena, insertar al principio, recorrer, vaciar.** —
+  - Hecho cuando: CP-001-L01, L02, L13 y L15 en OK.
 - [ ] **T4. Lista: buscar y llevar al principio por dato parcial.** —
   - Hecho cuando: CP-001-L03 a L08 en OK.
 - [ ] **T5. Lista: ver primero, sacar por clave, sacar último.** —

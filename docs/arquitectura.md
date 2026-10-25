@@ -106,7 +106,7 @@ incluir algo que no está ahí, se discute en el grupo antes de hacerlo.
 | Módulo | Responsabilidad | Primitivas | Usa |
 | --- | --- | --- | --- |
 | `comun.h` | Códigos de retorno, macro `MIN`, `typedef` del comparador `tCmp` y de la acción `tAccion` | Solo definiciones, sin `.c` | — |
-| `lista` | Lista simple genérica, idiom puntero a puntero | `crearLista`, `listaVacia`, `insPrinLista`, `buscarLista` (por dato parcial), `llevarAlPrinLista` (por clave, re-enlaza sin `malloc`), `verPrimeroLista`, `sacarPorClaveLista`, `sacarUltLista`, `recorrerLista`, `vaciarLista` | `comun.h` |
+| `lista` | Lista simple genérica, idiom puntero a puntero | `crearLista`, `listaVacia`, `listaLlena`, `insPrinLista`, `buscarLista` (por dato parcial), `llevarAlPrinLista` (por clave, re-enlaza sin `malloc`), `verPrimeroLista`, `sacarPorClaveLista`, `sacarUltLista`, `recorrerLista`, `vaciarLista` | `comun.h` |
 | `lista_doble` | Lista doble con `pri` y `ult` (como la cola), expone el nodo como "posición" | `crearListaD`, `listaVaciaD`, `insPrinListaD` (devuelve la posición del nodo), `verInfoListaD`, `actualizarInfoListaD`, `moverAlPrinListaD`, `sacarNodoListaD`, `verUltListaD`, `sacarUltListaD`, `recorrerListaD`, `vaciarListaD` | `comun.h` |
 | `arbol` | ABB genérico ordenado por `cmp` | `crearArbol`, `insArbol`, `buscarArbol` (por dato parcial), `eliminarArbol` (por clave), `alturaArbol`, `cantNodosArbol`, `recorrerInOrdenArbol`, `vaciarArbol` | `comun.h` |
 

@@ -35,6 +35,10 @@ ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
 - **Dos herramientas, una fuente:** skills en `.claude/skills/` (las leen Claude Code y OpenCode);
   agentes y comandos duplicados en `.claude/` y `.opencode/`; `CLAUDE.md` solo importa `AGENTS.md`.
 - **Agentes solo revisan y validan:** el TP es para aprender; el código lo escribe cada uno.
+- **`listaLlena` en el contrato de la lista (25/10/2026):** es primitiva de la cátedra.
+  `listaVacia`, `listaLlena` y `listaVaciaD` devuelven `LISTA_VACIA` / `LISTA_LLENA` / `LISTA_DISPONIBLE`
+  (8 / 9 / 0, en `comun.h`), no 1/0: pedido de los docentes. `insPrinLista` la consulta antes de reservar (decisión del grupo: cuesta dos `malloc`
+  extra por inserción; tenerlo en cuenta al medir en la spec 004). Caso CP-001-L15.
 - **Códigos de retorno en `tda/comun.h`:** la cátedra suele llamarlo `retornos.h`; lo que se corrige es
   usar los nombres simbólicos.
 

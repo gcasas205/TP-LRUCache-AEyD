@@ -23,6 +23,12 @@ Las funciones `static` son internas del `.c` y no van en el `.h`. "Copia con `MI
 - **Códigos de retorno** con `#define`: `EXITO 0`, `ERROR_MALLOC 1`, `NO_ENCONTRADO 2`, `DUPLICADO 3`,
   `VACIA 4`, `ERROR_ARCHIVO 5`, `FIN_ARCHIVO 6`, `ERROR_PARAMETRO 7`.
   - Todos distintos y `EXITO` en 0, así `if(ret != EXITO)` funciona siempre. Se usan siempre por nombre.
+- **Estados de lista** con `#define` (los devuelven `listaVacia`, `listaLlena` y `listaVaciaD`):
+  `LISTA_DISPONIBLE 0`, `LISTA_VACIA 8`, `LISTA_LLENA 9`.
+  - Estilo de la cátedra (`PILA_VACIA`, `PILA_LLENA`, `PILA_DISPONIBLE`): pedido de los docentes para
+    no devolver 1/0 sueltos. `LISTA_VACIA` y `LISTA_LLENA` no repiten ningún código de retorno (antes
+    `LISTA_VACIA 1` chocaba con `ERROR_MALLOC`). Se comparan siempre por nombre:
+    `if(listaVacia(&lista) == LISTA_VACIA)`.
 - **Macro `MIN(a, b)`**
   - Hace: `((a) < (b) ? (a) : (b))`, con paréntesis en cada argumento.
 - **`typedef int (*tCmp)(const void*, const void*)`**
@@ -37,9 +43,17 @@ Las funciones `static` son internas del `.c` y no van en el `.h`. "Copia con `MI
   - Hace: `*pLista = NULL`.
   - Stub: es la versión real, una línea.
 - **`int listaVacia(const tLista *pLista)`**
-  - Devuelve: 1 si no hay nodos, 0 si hay.
+  - Devuelve: `LISTA_VACIA` si no hay nodos, `LISTA_DISPONIBLE` si hay.
+- **`int listaLlena(const tLista *pLista, size_t tamInfo)`**
+  - Hace: pide un nodo y un bloque de `tamInfo` bytes con `malloc` y los libera enseguida. No modifica
+    la lista. Es la primitiva que da la cátedra; `insPrinLista` la consulta antes de reservar (decisión
+    del grupo), y además sigue chequeando sus propios `malloc`.
+  - Devuelve: `LISTA_LLENA` si alguno de los dos `malloc` falló (no hay memoria para otro nodo),
+    `LISTA_DISPONIBLE` si los dos salieron bien.
+  - Stub: `return LISTA_DISPONIBLE;`
 - **`int insPrinLista(tLista *pLista, const void *info, size_t tamInfo)`**
-  - Hace: reserva nodo e `info`, copia `tamInfo` bytes, engancha el nodo como primero.
+  - Hace: si `listaLlena` da `LISTA_LLENA`, devuelve `ERROR_MALLOC` sin tocar la lista. Si no, reserva nodo e
+    `info`, copia `tamInfo` bytes, engancha el nodo como primero.
   - Devuelve: `EXITO`; o `ERROR_MALLOC` si falla cualquiera de los dos `malloc`, liberando lo que haya
     pedido y sin modificar la lista.
   - Stub: `return EXITO;` sin insertar.
@@ -125,7 +139,7 @@ Estructura: `tListaD` con `tNodoD *pri` y `tNodoD *ult`; cada `tNodoD` con `info
 - **`void crearListaD(tListaD *pLista)`**
   - Hace: `pri` y `ult` en `NULL`.
 - **`int listaVaciaD(const tListaD *pLista)`**
-  - Devuelve: 1 si `pri == NULL`, 0 si no.
+  - Devuelve: `LISTA_VACIA` si `pri == NULL`, `LISTA_DISPONIBLE` si no.
 - **`int insPrinListaD(tListaD *pLista, const void *info, size_t tamInfo, tPosListaD *pos)`**
   - Hace: crea el nodo con `ant = NULL` y `sig = pri`; si la lista estaba vacía, también `ult` apunta al
     nuevo.
