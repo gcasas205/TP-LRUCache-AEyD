@@ -116,8 +116,11 @@ Estructura: `tLruS` con `tLista lista`, `unsigned capacidad`, `unsigned cantidad
     aceptable y se aclara en el informe.
   - Stub: `return EXITO;` (todo será fallo: equivale a "sin caché").
 - **`int obtenerLruS(tLruS *pLru, const void *clave, size_t tamClave, void *valor, size_t tamValor)`**
-  - Hace: `llevarAlPrinLista`; si encontró, `verPrimeroLista` a un buffer temporal de
-    `tamClave + tamValor` y `copiarValorEntrada`.
+  - Hace: `llevarAlPrinLista`; si encontró, pide un buffer temporal de `tamClave + tamValor`, copia
+    `valor` (los `tamValor` bytes del llamador) a partir de `tamClave` en el temporal, hace
+    `verPrimeroLista` al temporal y `copiarValorEntrada` a `valor`. La precarga hace que, si el valor
+    guardado es más corto que `tamValor`, el resto del buffer del llamador quede como estaba (ver
+    `plan.md` de la spec 001).
   - Devuelve: `EXITO` con el valor copiado y la entrada primera; `NO_ENCONTRADO` sin tocar `valor` ni el
     orden; o `ERROR_MALLOC` si no pudo pedir el buffer.
   - Stub: `return NO_ENCONTRADO;`

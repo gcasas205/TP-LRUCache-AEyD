@@ -3,10 +3,13 @@
 Estado del proyecto y decisiones que afectan a todo el repo. Máximo ~50 líneas: resumir o borrar lo que
 ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
 
-## Estado actual (20/10/2026)
-- Specs 001 a 004 en `Estado: borrador`, con plan, tareas y casos de prueba. Falta aprobarlas en grupo.
-- Spec 004 ampliada: muchos datos, calentamiento, modo de acceso con seek simulado (pedido de la cátedra).
-- Sin código todavía. Primer paso: congelar los `.h` según `docs/primitivas.md`.
+## Estado actual (25/10/2026)
+- **Spec 001 implementada y validada** (`/revisar` y `/validar` APROBADO, 41 casos en OK). Falta que el
+  grupo apruebe la spec y los dos cambios de contrato de hoy (`listaLlena`/`LISTA_*` y la precarga de
+  `obtenerLruS`), pasarlos al doc compartido y marcar `tasks.md`.
+- Specs 002 a 004 en `Estado: borrador`, sin código: sus `.c`/`.h` existen vacíos. Primer paso de cada
+  una: su T1 (congelar los `.h` según `docs/primitivas.md`, con stubs).
+- Code::Blocks: `TP-LRUCache.workspace` y `pruebas.cbp`, `generador.cbp`, `simulador.cbp` en la raíz.
 
 ## Decisiones (y por qué)
 - **Primitivas en camelCase con sufijo (`crearLruS`, `agregarCache`):** el docente lo aceptó (20/10/2026)
@@ -32,13 +35,13 @@ ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
   declara. **Calentamiento** del archivo antes de medir cada corrida.
 - **Lote ordenado proporcional** (`⌊j × 50000 / pedidos⌋`): el salto aleatorio no funciona con muchos
   usuarios.
-- **Dos herramientas, una fuente:** skills en `.claude/skills/` (las leen Claude Code y OpenCode);
-  agentes y comandos duplicados en `.claude/` y `.opencode/`; `CLAUDE.md` solo importa `AGENTS.md`.
-- **Agentes solo revisan y validan:** el TP es para aprender; el código lo escribe cada uno.
-- **`listaLlena` en el contrato de la lista (25/10/2026):** es primitiva de la cátedra.
-  `listaVacia`, `listaLlena` y `listaVaciaD` devuelven `LISTA_VACIA` / `LISTA_LLENA` / `LISTA_DISPONIBLE`
-  (8 / 9 / 0, en `comun.h`), no 1/0: pedido de los docentes. `insPrinLista` la consulta antes de reservar (decisión del grupo: cuesta dos `malloc`
-  extra por inserción; tenerlo en cuenta al medir en la spec 004). Caso CP-001-L15.
+- **Estados de lista en `comun.h` (25/10/2026):** `listaVacia`, `listaLlena` (primitiva de la cátedra)
+  y `listaVaciaD` devuelven `LISTA_VACIA` 8 / `LISTA_LLENA` 9 / `LISTA_DISPONIBLE` 0, no 1/0 (pedido de
+  los docentes). Son solo respuestas de esas preguntas: las demás primitivas siguen devolviendo `VACIA`,
+  `ERROR_MALLOC`, etc. `insPrinLista` consulta `listaLlena` (dos `malloc` extra por inserción: tenerlo en
+  cuenta al medir en la spec 004).
+- **Compilación de pruebas con los `.c` listados uno por uno (25/10/2026):** un `.c` vacío rompe la
+  configuración de la cátedra. Cada spec suma sus `.c` a las tres líneas de `pruebas` de `AGENTS.md`.
 - **Códigos de retorno en `tda/comun.h`:** la cátedra suele llamarlo `retornos.h`; lo que se corrige es
   usar los nombres simbólicos.
 
@@ -54,3 +57,9 @@ ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
   llamada al sistema (~1 µs), no un acceso físico. Decirlo en el informe.
 - El valor de una entrada se copia con `memcpy` desde `(char*)info + tamClave`; nunca castear ese
   puntero a un struct (alineación).
+- Code::Blocks genera las firmas como `tLista* pLista`; la cátedra pide `tLista *pLista` (lo marca
+  `/revisar`). Los casts sí van pegados: `(tNodo*)`.
+- En `listaLlena` el truco "liberar y preguntar si quedó `NULL`" vale solo con dos variables (nodo y
+  bloque): `nodo->info` después del `free` es leer memoria liberada.
+- MinGW no trae sanitizer y su `gcc` no está en el PATH de Git Bash. Después de cambiar `AGENTS.md`, salir
+  y volver a abrir Claude Code: la sesión vieja sigue con los comandos anteriores.

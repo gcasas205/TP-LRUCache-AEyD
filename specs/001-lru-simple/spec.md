@@ -1,6 +1,6 @@
 # Spec 001 — LRU Cache sobre lista simple (Parte 1)
 
-Estado: borrador
+Estado: implementada
 Dueño: Persona 1
 
 ## Contexto y objetivo

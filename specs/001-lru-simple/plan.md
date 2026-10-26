@@ -19,8 +19,9 @@ Parte de la spec 001 en borrador; se ajusta cuando se apruebe. Las firmas y reto
 - **agregar:** arma la entrada con `crearEntrada`. Si `sacarPorClaveLista` encuentra la clave, la saca
   (el reemplazo es sacar + insertar al principio). Si no estaba, inserta al principio, suma 1 y, si
   superó la capacidad, saca el último. Libera el bloque temporal al final (la lista guardó su copia).
-- **obtener:** `llevarAlPrinLista`; si encontró, `verPrimeroLista` a un buffer temporal del tamaño de la
-  entrada y `copiarValorEntrada` al buffer del llamador. Un solo recorrido hace la búsqueda y el
+- **obtener:** `llevarAlPrinLista`; si encontró, pide un buffer temporal de `tamClave + tamValor`,
+  **precarga su parte de valor con el contenido actual del buffer del llamador**, hace `verPrimeroLista`
+  al temporal y `copiarValorEntrada` al buffer del llamador. Un solo recorrido hace la búsqueda y el
   reordenamiento.
 - **borrar:** `sacarPorClaveLista` con `info = NULL`; si encontró, resta 1.
 - **vaciar:** `vaciarLista` y `cantidad = 0`; capacidad y `cmp` se conservan.
@@ -32,7 +33,8 @@ Parte de la spec 001 en borrador; se ajusta cuando se apruebe. Las firmas y reto
 | Entrada `[clave][valor]` en un solo `info` | El `cmp` del usuario compara directo contra el principio del bloque: búsqueda por dato parcial sin comparador intermedio | Nodo con dos punteros (`clave` y `valor`): obliga a cambiar el nodo genérico de la cátedra |
 | La caché lleva `cantidad` | Saber si está llena sin recorrer la lista | Contar nodos en cada `agregar`: recorrido extra en cada operación |
 | Reemplazo = sacar + insertar al principio | Reusa dos primitivas probadas y el valor puede cambiar de tamaño | Modificar el `info` en el lugar y después mover: necesita una primitiva más en la lista |
-| `llevarAlPrinLista` re-enlaza el nodo | No hay `malloc` ni `free` al obtener, que es la operación más frecuente | Sacar y volver a insertar: dos reservas por cada acierto |
+| `llevarAlPrinLista` re-enlaza el nodo | No se reservan ni liberan nodos al obtener, que es la operación más frecuente | Sacar y volver a insertar: dos reservas por cada acierto |
+| Precargar el temporal de `obtener` con el buffer del llamador (25/10/2026) | `verPrimeroLista` no informa el tamaño real guardado: sin precarga, si el valor guardado es más corto que `tamValor`, `copiarValorEntrada` copia basura del temporal encima del resto del buffer (CP-001-10). Con la precarga, los bytes que no son del valor guardado vuelven intactos al llamador | Que `verPrimeroLista` devuelva los bytes copiados: cambia una primitiva de la lista ya probada y su contrato |
 | Pruebas de caja negra para la caché | Los mismos casos sirven después para la Parte 2 (spec 002) y para la interfaz (spec 003) | Mirar los nodos desde las pruebas: rompe el principio 4 |
 
 ## Estrategia de pruebas

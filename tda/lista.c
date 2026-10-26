@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-void crearLista(tLista* pLista)
+void crearLista(tLista *pLista)
 {
     *pLista = NULL;
 }
 
-int vaciarLista(tLista* pLista)
+int vaciarLista(tLista *pLista)
 {
     tNodo *elim;
     int cont = 0;
@@ -22,7 +22,7 @@ int vaciarLista(tLista* pLista)
     return cont;
 }
 
-void recorrerLista(const tLista* pLista, tAccion accion, void* contexto)
+void recorrerLista(const tLista *pLista, tAccion accion, void *contexto)
 {
     while(*pLista)
     {
@@ -31,7 +31,7 @@ void recorrerLista(const tLista* pLista, tAccion accion, void* contexto)
     }
 }
 
-int listaLlena(const tLista* pLista, size_t tamInfo)
+int listaLlena(const tLista *pLista, size_t tamInfo)
 {
     void *nue, *aux;
     (void)pLista;
@@ -43,12 +43,12 @@ int listaLlena(const tLista* pLista, size_t tamInfo)
     return (!nue || !aux)?LISTA_LLENA:LISTA_DISPONIBLE;
 }
 
-int listaVacia(const tLista* pLista)
+int listaVacia(const tLista *pLista)
 {
     return (*pLista)?LISTA_DISPONIBLE:LISTA_VACIA;
 }
 
-int insPrinLista(tLista* pLista, const void* info, size_t tamInfo)
+int insPrinLista(tLista *pLista, const void *info, size_t tamInfo)
 {
     tNodo *nue;
     if(listaLlena(pLista, tamInfo) == LISTA_LLENA)
@@ -73,7 +73,7 @@ int insPrinLista(tLista* pLista, const void* info, size_t tamInfo)
     return EXITO;
 }
 
-int buscarLista(const tLista* pLista, const void* clave, void* info, size_t tamInfo, tCmp cmp)
+int buscarLista(const tLista *pLista, const void *clave, void *info, size_t tamInfo, tCmp cmp)
 {
     while(*pLista)
     {
@@ -87,7 +87,7 @@ int buscarLista(const tLista* pLista, const void* clave, void* info, size_t tamI
     return NO_ENCONTRADO;
 }
 
-int llevarAlPrinLista(tLista* pLista, const void* clave, tCmp cmp)
+int llevarAlPrinLista(tLista *pLista, const void *clave, tCmp cmp)
 {
     tLista *ini = pLista;
     tNodo *mover;
@@ -107,7 +107,7 @@ int llevarAlPrinLista(tLista* pLista, const void* clave, tCmp cmp)
     return EXITO;
 }
 
-int verPrimeroLista(const tLista* pLista, void* info, size_t tamInfo)
+int verPrimeroLista(const tLista *pLista, void *info, size_t tamInfo)
 {
     if(listaVacia(pLista) == LISTA_VACIA)
         return VACIA;
@@ -117,7 +117,7 @@ int verPrimeroLista(const tLista* pLista, void* info, size_t tamInfo)
     return EXITO;
 }
 
-int sacarPorClaveLista(tLista* pLista, const void* clave, void* info, size_t tamInfo, tCmp cmp)
+int sacarPorClaveLista(tLista *pLista, const void *clave, void *info, size_t tamInfo, tCmp cmp)
 {
     tNodo *elim;
     if(listaVacia(pLista) == LISTA_VACIA)
@@ -141,7 +141,7 @@ int sacarPorClaveLista(tLista* pLista, const void* clave, void* info, size_t tam
     return EXITO;
 }
 
-int sacarUltLista(tLista* pLista, void* info, size_t tamInfo)
+int sacarUltLista(tLista *pLista, void *info, size_t tamInfo)
 {
     tNodo *elim;
     if(listaVacia(pLista) == LISTA_VACIA)
