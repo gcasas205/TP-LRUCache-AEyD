@@ -154,13 +154,14 @@ permite medir Parte 1, Parte 2 y "sin caché" con el mismo código.
 | Campo | Tipo (en palabras) | Para qué |
 | --- | --- | --- |
 | `impl` | `void*` a una `tLruS`, una `tLruD` o `NULL` | El estado real de la caché elegida |
-| `agregar`, `obtener`, `borrar`, `vaciar` | Punteros a función que reciben `void *impl` | Despacho a la implementación |
+| `agregar`, `obtener`, `borrar`, `vaciar`, `altura` | Punteros a función que reciben `void *impl` (`altura`, `const void *impl`) | Despacho a la implementación |
 | `nombre` | Cadena fija ("Lista simple", "Lista doble + ABB", "Sin caché") | Lo usa `reporte` |
 
 Los punteros a función apuntan a **adaptadores** chiquitos dentro de `cache.c`, que castean `impl` y
 llaman a `agregarLruS` o `agregarLruD`. `cache.c` es el único archivo que conoce a las dos
 implementaciones. Para "sin caché", `obtener` siempre devuelve `NO_ENCONTRADO` y `agregar` no hace nada:
-el simulador no necesita un `if` especial.
+el simulador no necesita un `if` especial. La altura del índice también va por un adaptador (`altura`):
+la Parte 2 devuelve la del árbol y las otras dos, -1, sin preguntar qué variante es (27/10/2026).
 
 ### Formato de cada entrada: la clave va primero
 

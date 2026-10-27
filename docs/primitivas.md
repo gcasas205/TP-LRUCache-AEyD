@@ -264,8 +264,12 @@ insertar se hacen iterativas porque se llaman millones de veces.
 
 ### cache (interfaz común)
 
-Estructura: `tCache` con `void *impl`, los punteros a los adaptadores y `const char *nombre`. Cada
-operación devuelve exactamente lo que devuelve la implementación de abajo.
+Estructura: `tCache` con `void *impl`, cinco punteros a adaptadores (`agregar`, `obtener`, `borrar`,
+`vaciar` y `altura`) y `const char *nombre`. Cada operación devuelve exactamente lo que devuelve la
+implementación de abajo. Las firmas de los punteros son `typedef` en `cache.h` (`tAgregarImpl`,
+`tObtenerImpl`, `tBorrarImpl`, `tVaciarImpl`, `tAlturaImpl`); todas reciben la implementación como
+`void *impl`, salvo `tAlturaImpl`, que recibe `const void *impl`. `cache.h` solo incluye `<stddef.h>` y
+`comun.h`: no conoce `lru_simple.h` ni `lru_doble.h`.
 
 - **`int crearCacheSimple(tCache *pCache, unsigned capacidad, tCmp cmp)`**
   - Hace: `malloc` de una `tLruS`, `crearLruS`, carga los adaptadores de la Parte 1 y el nombre.
@@ -274,7 +278,8 @@ operación devuelve exactamente lo que devuelve la implementación de abajo.
   - Igual, con `tLruD` y los adaptadores de la Parte 2.
 - **`void crearSinCache(tCache *pCache)`**
   - Hace: `impl = NULL`; adaptadores que no hacen nada.
-  - Comportamiento: `agregar` devuelve `EXITO`; `obtener` y `borrar` devuelven `NO_ENCONTRADO`.
+  - Comportamiento: `agregar` devuelve `EXITO`; `obtener` y `borrar` devuelven `NO_ENCONTRADO`; `altura`
+    devuelve -1.
 - **`int agregarCache(tCache *pCache, const void *clave, size_t tamClave, const void *valor, size_t tamValor)`**
 - **`int obtenerCache(tCache *pCache, const void *clave, size_t tamClave, void *valor, size_t tamValor)`**
 - **`int borrarCache(tCache *pCache, const void *clave, size_t tamClave)`**
@@ -286,11 +291,13 @@ operación devuelve exactamente lo que devuelve la implementación de abajo.
 - **`const char *nombreCache(const tCache *pCache)`**
   - Devuelve: "Sin caché", "Lista simple" o "Lista doble + ABB".
 - **`int alturaIndiceCache(const tCache *pCache)`**
+  - Hace: llama al adaptador `altura` (sin `if` sobre la variante).
   - Devuelve: la altura del árbol en la Parte 2; -1 en las otras dos.
-- **Adaptadores `static`** (`agregarAdapS`, `obtenerAdapS`, `borrarAdapS`, `vaciarAdapS` y los cuatro
-  `AdapD`)
+- **Adaptadores `static`** (`agregarAdapS`, `obtenerAdapS`, `borrarAdapS`, `vaciarAdapS`, `alturaAdapS` y
+  los cinco `AdapD`)
   - Hacen: castean `void *impl` a `tLruS*` o `tLruD*` y llaman a la primitiva. Devuelven lo que ella
-    devuelve.
+    devuelve. `alturaAdapD` llama a `alturaIndiceLruD`; `alturaAdapS` devuelve -1 (la Parte 1 no tiene
+    índice).
 
 ---
 

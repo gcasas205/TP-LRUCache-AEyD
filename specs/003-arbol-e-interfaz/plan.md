@@ -23,8 +23,8 @@ búsqueda lineal y las mismas firmas) para que la Persona 2 no se trabe.
   el puntero pasa a apuntar al hijo. Dos hijos: copia el `info` del menor del subárbol derecho
   (`menorNodoArbol`) en el nodo y elimina ese menor, que tiene a lo sumo un hijo.
 - **Altura, cantidad, recorrido, vaciar:** recursivas, caso base árbol vacío. Vaciar en pos-orden.
-- **Interfaz:** cada `crearCacheX` pide la estructura de la variante, la crea y carga sus cuatro
-  adaptadores y su nombre. Cada operación de la interfaz solo llama al puntero correspondiente. "Sin
+- **Interfaz:** cada `crearCacheX` pide la estructura de la variante, la crea y carga sus cinco
+  adaptadores (incluido `altura`) y su nombre. Cada operación de la interfaz solo llama al puntero correspondiente. "Sin
   caché" tiene adaptadores fijos que no guardan nada.
 
 ## Decisiones (y alternativa descartada)
