@@ -203,7 +203,8 @@ Estructura: `tLruD` con `tListaD lista`, `tArbol indice`, `capacidad`, `cantidad
   - Stub: `return NO_ENCONTRADO;`
 - **`int borrarLruD(tLruD *pLru, const void *clave, size_t tamClave)`**
   - Hace: `buscarArbol` (para la posición), `eliminarArbol`, `sacarNodoListaD`, `cantidad--`.
-  - Devuelve: `EXITO` o `NO_ENCONTRADO`.
+  - Devuelve: `EXITO`, `NO_ENCONTRADO`, o `ERROR_MALLOC` si no pudo pedir el buffer para buscar en el
+    árbol (sin tocar nada).
 - **`void vaciarLruD(tLruD *pLru)`**
   - Hace: `vaciarArbol` y `vaciarListaD`, `cantidad = 0`.
 - **`int alturaIndiceLruD(const tLruD *pLru)`**

@@ -5,5 +5,6 @@
 // main_pruebas las llama en orden y despues imprimirResumen (verificar.h).
 
 int pruebas001(void);
+int pruebas002(void);
 
 #endif // PRUEBAS_H_INCLUDED
