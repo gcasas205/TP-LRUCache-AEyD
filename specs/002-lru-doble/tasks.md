@@ -19,7 +19,7 @@ escribe un agente y dan FALLA); después el código, y las dos compilaciones de 
   - Hecho cuando: CP-002-07 a 10, 30 y 31 en OK.
 - [X] **T8. `borrarLruD` y `vaciarLruD`.** RF-08 a RF-10, RF-16
   - Hecho cuando: CP-002-13 a 18 y 32 en OK.
-- [ ] **T9. Cambiar el stub por el árbol real de la spec 003 y correr todo.** RF-11, RF-12, RF-14
+- [X] **T9. Cambiar el stub por el árbol real de la spec 003 y correr todo.** RF-11, RF-12, RF-14
   - Hecho cuando: todos los casos de prueba de 002 en OK con el árbol real, incluidos 19 a 21 y 26 a 29.
-- [ ] **T10. Revisión y validación.** RF-13, RF-16, RF-17, RNF-01, RNF-02
+- [X] **T10. Revisión y validación.** RF-13, RF-16, RF-17, RNF-01, RNF-02
   - Hecho cuando: `/revisar 002` y `/validar 002` dan `VEREDICTO: APROBADO` (CP-002-24, 25, 33 y 34 en OK).

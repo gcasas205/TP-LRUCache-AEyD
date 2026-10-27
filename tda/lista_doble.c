@@ -95,8 +95,6 @@ void moverAlPrinListaD(tListaD *pLista, tPosListaD pos)
 int sacarNodoListaD(tListaD *pLista, tPosListaD pos, void *info, size_t tamInfo)
 {
     tNodoD *nodo = (tNodoD*)pos;
-    if(listaVaciaD(pLista) == LISTA_VACIA)
-        return VACIA;
 
     // LADO IZQUIERDO
     if(nodo->ant)

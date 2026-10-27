@@ -8,7 +8,6 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/pruebas" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="." />
 				<Option object_output="obj/Debug/pruebas/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -18,7 +17,6 @@
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/pruebas" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="." />
 				<Option object_output="obj/Release/pruebas/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -40,70 +38,73 @@
 			<Add directory="sim" />
 			<Add directory="pruebas" />
 		</Compiler>
-		<Unit filename="tda/arbol.h" />
-		<Unit filename="tda/comun.h" />
-		<Unit filename="tda/lista.h" />
-		<Unit filename="tda/lista_doble.h" />
-		<Unit filename="tda/arbol.c">
+		<Unit filename="apps/main_pruebas.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="tda/lista.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="tda/lista_doble.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="cache/cache.h" />
-		<Unit filename="cache/entrada.h" />
-		<Unit filename="cache/lru_doble.h" />
-		<Unit filename="cache/lru_simple.h" />
 		<Unit filename="cache/cache.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="cache/cache.h" />
 		<Unit filename="cache/entrada.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="cache/entrada.h" />
 		<Unit filename="cache/lru_doble.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="cache/lru_doble.h" />
 		<Unit filename="cache/lru_simple.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="dominio/posteo.h" />
-		<Unit filename="dominio/usuario.h" />
+		<Unit filename="cache/lru_simple.h" />
 		<Unit filename="dominio/posteo.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="dominio/posteo.h" />
 		<Unit filename="dominio/usuario.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="sim/generador.h" />
-		<Unit filename="sim/metricas.h" />
-		<Unit filename="sim/reporte.h" />
-		<Unit filename="sim/simulador.h" />
-		<Unit filename="sim/generador.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="sim/metricas.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="sim/reporte.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="sim/simulador.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="dominio/usuario.h" />
 		<Unit filename="pruebas/pruebas.h" />
-		<Unit filename="pruebas/verificar.h" />
 		<Unit filename="pruebas/pruebas_001.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="pruebas/pruebas_002.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pruebas/verificar.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="apps/main_pruebas.c">
+		<Unit filename="pruebas/verificar.h" />
+		<Unit filename="sim/generador.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sim/generador.h" />
+		<Unit filename="sim/metricas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sim/metricas.h" />
+		<Unit filename="sim/reporte.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sim/reporte.h" />
+		<Unit filename="sim/simulador.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="sim/simulador.h" />
+		<Unit filename="tda/arbol.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tda/arbol.h" />
+		<Unit filename="tda/comun.h" />
+		<Unit filename="tda/lista.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tda/lista.h" />
+		<Unit filename="tda/lista_doble.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="tda/lista_doble.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

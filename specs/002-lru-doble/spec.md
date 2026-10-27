@@ -1,6 +1,6 @@
 # Spec 002 — LRU Cache con lista doble e índice (Parte 2)
 
-Estado: borrador
+Estado: implementada
 Dueño: Persona 2
 Depende de: spec 001 (comportamiento de referencia) y spec 003 (árbol índice)
 

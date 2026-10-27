@@ -28,6 +28,7 @@ int agregarLruD(tLruD *pLru, const void *clave, size_t tamClave, const void *val
     void *bloque = NULL, *busqueda, *indice;
     tPosListaD pos;
     int estaba, ret;
+
     if(crearEntrada(&bloque, clave, tamClave, valor, tamValor) == ERROR_MALLOC)
         return ERROR_MALLOC;
 
@@ -110,11 +111,11 @@ int obtenerLruD(tLruD *pLru, const void *clave, size_t tamClave, void *valor, si
     memcpy(&pos, (char*)busqueda + tamClave, sizeof(tPosListaD));
     free(busqueda);
 
-    moverAlPrinListaD(&pLru->lista, pos);
-
     temp = malloc(tamClave + tamValor);
     if(!temp)
         return ERROR_MALLOC;
+
+    moverAlPrinListaD(&pLru->lista, pos);
 
     tamElem = verInfoListaD(pos, temp, tamClave + tamValor);
     copiarValorEntrada(temp, tamElem, tamClave, valor, tamValor);
