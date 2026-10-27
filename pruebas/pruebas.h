@@ -6,5 +6,6 @@
 
 int pruebas001(void);
 int pruebas002(void);
+int pruebas003(void);
 
 #endif // PRUEBAS_H_INCLUDED

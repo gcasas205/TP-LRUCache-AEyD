@@ -36,6 +36,9 @@ búsqueda lineal y las mismas firmas) para que la Persona 2 no se trabe.
 | Dos hijos: menor del subárbol derecho | Regla fija, así los casos de prueba tienen un resultado único | Mayor del izquierdo: igual de válido, pero hay que elegir uno |
 | Despacho con punteros a función en `tCache` | El simulador no tiene ningún `if` por variante (RF-09, RNF-02) | Un `switch` sobre un campo "tipo" en cada operación: cada variante nueva toca todas las funciones |
 | "Sin caché" como una variante más | El simulador mide la línea base con el mismo código | Un `if(usarCache)` en el simulador |
+| Quinto adaptador `altura` en `tCache` (27/10) | `alturaIndiceCache` responde sin preguntar qué variante es; la Parte 1 y "sin caché" reusan `alturaAdapS`, que devuelve -1 | Comparar `nombre` o un campo "tipo" dentro de `alturaIndiceCache` |
+| `vaciarCache` deja la caché como "sin caché" (27/10) | Después del `free(impl)` llama a `crearSinCache`: un segundo `vaciarCache`, o agregar después de vaciar, es seguro (no toca memoria liberada). Consecuencia: después de vaciar, `nombreCache` devuelve "Sin cache"; el nombre se consulta antes de vaciar | Solo `impl = NULL`: evita el doble `free`, pero el adaptador `vaciar` sigue apuntando a la variante y recibe `NULL` |
+| Nombre "Sin cache" sin tilde (27/10) | Los `.c` quedan en ASCII y la consola de Windows (MinGW, CodeBlocks) lo muestra bien | "Sin caché": depende de la codificación del `.c` y de la consola |
 
 ## Estrategia de pruebas
 

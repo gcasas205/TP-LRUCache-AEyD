@@ -155,7 +155,7 @@ permite medir Parte 1, Parte 2 y "sin caché" con el mismo código.
 | --- | --- | --- |
 | `impl` | `void*` a una `tLruS`, una `tLruD` o `NULL` | El estado real de la caché elegida |
 | `agregar`, `obtener`, `borrar`, `vaciar`, `altura` | Punteros a función que reciben `void *impl` (`altura`, `const void *impl`) | Despacho a la implementación |
-| `nombre` | Cadena fija ("Lista simple", "Lista doble + ABB", "Sin caché") | Lo usa `reporte` |
+| `nombre` | Cadena fija ("Lista simple", "Lista doble + ABB", "Sin cache", sin tilde) | Lo usa `reporte` |
 
 Los punteros a función apuntan a **adaptadores** chiquitos dentro de `cache.c`, que castean `impl` y
 llaman a `agregarLruS` o `agregarLruD`. `cache.c` es el único archivo que conoce a las dos

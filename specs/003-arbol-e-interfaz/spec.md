@@ -1,6 +1,6 @@
 # Spec 003 — Árbol índice e interfaz común de caché
 
-Estado: borrador
+Estado: implementada
 Dueño: Persona 3
 
 ## Contexto y objetivo

@@ -289,7 +289,7 @@ implementación de abajo. Las firmas de los punteros son `typedef` en `cache.h` 
   - Hace: vacía la implementación, hace `free(impl)` e `impl = NULL`. Después de esto la `tCache` no se
     usa más hasta un nuevo `crear`.
 - **`const char *nombreCache(const tCache *pCache)`**
-  - Devuelve: "Sin caché", "Lista simple" o "Lista doble + ABB".
+  - Devuelve: "Sin cache" (sin tilde), "Lista simple" o "Lista doble + ABB".
 - **`int alturaIndiceCache(const tCache *pCache)`**
   - Hace: llama al adaptador `altura` (sin `if` sobre la variante).
   - Devuelve: la altura del árbol en la Parte 2; -1 en las otras dos.
