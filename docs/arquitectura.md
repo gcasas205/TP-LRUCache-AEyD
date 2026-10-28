@@ -134,7 +134,7 @@ use un solo estilo (ver `MEMORY.md`).
 | `generador` | Genera posteos y lotes con semilla; una estrategia por tipo de lote | `generarPosteos`, `generarLote`, estrategias `feedConcentrado`, `feedDisperso`, `feedOrdenado` | `posteo`, `usuario` |
 | `metricas` | Contadores y tiempos de una corrida | `iniciarMetricas`, `registrarAcierto`, `registrarFallo`, `registrarLectura`, `registrarUsuario`, `registrarPosteo`, `fijarTiempo`, `promedioPorPosteo`, `promedioPorUsuario` | — |
 | `simulador` | Recorre el lote y pide cada posteo a la caché o al archivo | `simular` | `cache`, `posteo`, `usuario`, `metricas` |
-| `reporte` | Imprime la tabla de resultados y un CSV para el informe | `imprimirEncabezado`, `imprimirFila`, `exportarCsv` | `metricas`, `cache` |
+| `reporte` | Imprime la tabla de resultados y un CSV para el informe | `imprimirEncabezado`, `imprimirFila`, `exportarEncabezadoCsv`, `exportarCsv` | `metricas`, `cache` |
 
 ### Capa 4 — Programas (`apps/`)
 

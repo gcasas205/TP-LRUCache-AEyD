@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 void crearListaD(tListaD *pLista)
 {
     pLista->pri = pLista->ult = NULL;
@@ -38,10 +37,10 @@ int insPrinListaD(tListaD *pLista, const void *info, size_t tamInfo, tPosListaD 
     nue->sig = pLista->pri;
 
     if(pLista->pri)
-        pLista->pri->ant = nue; // Si hay nodo insertado, pongo como anterior al nuevo
+        pLista->pri->ant = nue;
     else
-        pLista->ult = nue; // Sino hay nodo insertado, el ultimo es el primero.
-    pLista->pri = nue; // Asigno como primero siempre al que inserto.
+        pLista->ult = nue;
+    pLista->pri = nue;
 
     *pos = nue;
 
@@ -96,23 +95,19 @@ int sacarNodoListaD(tListaD *pLista, tPosListaD pos, void *info, size_t tamInfo)
 {
     tNodoD *nodo = (tNodoD*)pos;
 
-    // LADO IZQUIERDO
     if(nodo->ant)
         nodo->ant->sig = nodo->sig;
     else
         pLista->pri = nodo->sig;
 
-    // LADO DERECHO
     if(nodo->sig)
         nodo->sig->ant = nodo->ant;
     else
         pLista->ult = nodo->ant;
 
-    // COPIAR (solo si quien llama dio un buffer)
     if(info)
         memcpy(info, nodo->info, MIN(nodo->tamInfo,tamInfo));
 
-    // LIBERAR: primero el info, despues el nodo
     free(nodo->info);
     free(nodo);
 

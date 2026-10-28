@@ -30,8 +30,6 @@ static int alturaAdapS(const void *impl)
     return -1;
 }
 
-
-
 static int agregarAdapD(void *impl, const void *clave, size_t tamClave, const void *valor, size_t tamValor)
 {
     return agregarLruD((tLruD*)impl, clave, tamClave, valor, tamValor);
@@ -56,8 +54,6 @@ static int alturaAdapD(const void *impl)
 {
     return alturaIndiceLruD((const tLruD*)impl);
 }
-
-
 
 static int agregarAdapSinCache(void *impl, const void *clave, size_t tamClave, const void *valor, size_t tamValor)
 {

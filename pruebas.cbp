@@ -75,6 +75,9 @@
 		<Unit filename="pruebas/pruebas_003.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="pruebas/pruebas_004.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="pruebas/verificar.c">
 			<Option compilerVar="CC" />
 		</Unit>

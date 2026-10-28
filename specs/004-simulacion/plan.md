@@ -26,8 +26,9 @@ Mientras la interfaz (spec 003) no esté, el simulador se prueba con `crearSinCa
 - `generador <semilla> <usuarios> <grupo_concentrado>`: escribe `datos/posteos.dat`,
   `datos/lote_concentrado.dat`, `datos/lote_disperso.dat` y `datos/lote_ordenado.dat`.
 - `simulador [directo | seek | ambos]`: sin argumento, `ambos`.
-- Propuesta (duda abierta de la spec): 50000 usuarios (un millón de pedidos, lotes de ~4,8 MB), G = 300,
-  capacidades 10, 100, 1000 y 5000. La cantidad de usuarios se ajusta hasta cumplir RNF-04.
+- Valores del informe (27/10/2026): `generador 2026 80000 300` (1,6 millones de pedidos, lotes de
+  ~7,7 MB), capacidades 10, 100, 1000 y 5000. Con 50000 usuarios el lote ordenado sin caché duraba
+  0,72 s y no cumplía RNF-04.
 
 ## Cómo resuelve cada parte (sin código)
 

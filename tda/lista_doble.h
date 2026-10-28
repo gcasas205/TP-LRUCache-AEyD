@@ -30,5 +30,4 @@ int sacarUltListaD(tListaD *pLista, void *info, size_t tamInfo);
 void recorrerListaD(const tListaD *pLista, tAccion accion, void *contexto);
 int vaciarListaD(tListaD *pLista);
 
-
 #endif

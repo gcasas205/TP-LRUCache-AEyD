@@ -22,5 +22,4 @@ int cantNodosArbol(const tArbol *pArbol);
 void recorrerInOrdenArbol(const tArbol *pArbol, tAccion accion, void *contexto);
 int vaciarArbol(tArbol *pArbol);
 
-
 #endif

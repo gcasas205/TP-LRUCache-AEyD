@@ -1,8 +1,3 @@
-// Pruebas de la spec 003 (arbol indice e interfaz comun). Los IDs y valores son los de
-// specs/003-arbol-e-interfaz/casos-prueba.md. Los casos 16 y 25 son de revision y no estan aca.
-// Arbol: datos tReg {clave, nombre} con nombre "n" + la clave; T7 = 50 30 70 20 40 60 80.
-// Interfaz: las secuencias de CP-001-06 y 07 se corren por tCache y por la primitiva directa
-// (LruS / LruD) y se exige el mismo resultado (RF-11).
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,16 +22,12 @@ typedef struct
     char nombre[10];
 } tReg;
 
-// Para CP-003-15: el dato apunta a memoria que el arbol no es duenio
 typedef struct
 {
     int clave;
     int *dato;
 } tRegPtr;
 
-// ----------------------------------------------------------------- auxiliares
-
-// Compara el int que esta al principio de cada bloque, sin resta (no desborda)
 static int cmpInt(const void *a, const void *b)
 {
     int x = *(const int*)a;
@@ -45,7 +36,6 @@ static int cmpInt(const void *a, const void *b)
     return (x > y) - (x < y);
 }
 
-// Agrega al final de texto lo que sigue, separado por un espacio si texto no esta vacio
 static void anexar(char *texto, const char *agregado)
 {
     if(*texto)
@@ -60,8 +50,6 @@ static void anexarInt(char *texto, const char *rotulo, int valor)
     sprintf(item, "%s%d", rotulo, valor);
     anexar(texto, item);
 }
-
-// ----------------------------------------------------------------- arbol
 
 static tReg armarReg(int clave)
 {
@@ -92,7 +80,7 @@ static int buscarClave(const tArbol *pArbol, int clave, tReg *destino)
     tReg parcial;
 
     memset(&parcial, 0, sizeof(parcial));
-    parcial.clave = clave;                     // dato parcial: solo la clave cargada
+    parcial.clave = clave;
     return buscarArbol(pArbol, &parcial, destino, sizeof(tReg), cmpInt);
 }
 
@@ -104,14 +92,12 @@ static void acumularClave(void *info, void *contexto)
     anexar((char*)contexto, num);
 }
 
-// Deja en texto las claves que imprime el recorrido en orden
 static void inOrden(const tArbol *pArbol, char *texto)
 {
     *texto = '\0';
     recorrerInOrdenArbol(pArbol, acumularClave, texto);
 }
 
-// Inserta T7 y devuelve cuantas inserciones no dieron EXITO
 static int armarT7(tArbol *pArbol)
 {
     int claves[] = {50, 30, 70, 20, 40, 60, 80};
@@ -125,7 +111,6 @@ static int armarT7(tArbol *pArbol)
     return errores;
 }
 
-// Anexa "[in-orden] altura=A cant=C"
 static void estadoArbol(const tArbol *pArbol, char *texto)
 {
     char rec[TAM_TEXTO];
@@ -371,7 +356,6 @@ static void cp15(void)
         }
     }
     anexarInt(obt, "vaciar=", vaciarArbol(&arbol));
-    // si el arbol hubiera liberado los dato, leerlos aca lo marca el sanitizer
     for(k = 0; k < CANT_PUNTEROS; k++)
         if(datos[k])
         {
@@ -384,15 +368,11 @@ static void cp15(void)
                    "vaciar no libera la memoria a la que apuntan los datos");
 }
 
-// ----------------------------------------------------------------- interfaz
-
 static int agregarTextoCache(tCache *pCache, int clave, const char *valor)
 {
     return agregarCache(pCache, &clave, sizeof(clave), valor, strlen(valor) + 1);
 }
 
-// Para cada clave, en orden, anexa "k-" si esta ausente o "k+valor" si esta presente.
-// Obtener cambia el orden de uso: por eso se piden primero las que se esperan ausentes.
 static void presenciaCache(tCache *pCache, const int *claves, int cant, char *texto)
 {
     char valor[TAM_BUFFER + 1];
@@ -410,8 +390,6 @@ static void presenciaCache(tCache *pCache, const int *claves, int cant, char *te
     }
 }
 
-// Las secuencias de CP-001-06 y 07, escritas una sola vez sobre tCache (sin ningun if por
-// variante). Anexan los codigos de cada operacion y despues la presencia de 2, 1, 3 y 4.
 static void secuencia06(tCache *pCache, char *texto)
 {
     int claves[] = {2, 1, 3, 4};
@@ -440,8 +418,6 @@ static void secuencia07(tCache *pCache, char *texto)
     presenciaCache(pCache, claves, 4, texto);
 }
 
-// La misma secuencia contra la primitiva directa, para comparar (RF-11). Se arma un tCache
-// "a mano" que apunta a una tLruS / tLruD local con adaptadores de prueba.
 static int agregarDirS(void *impl, const void *clave, size_t tamClave, const void *valor, size_t tamValor)
 {
     return agregarLruS((tLruS*)impl, clave, tamClave, valor, tamValor);
@@ -462,7 +438,6 @@ static int obtenerDirD(void *impl, const void *clave, size_t tamClave, void *val
     return obtenerLruD((tLruD*)impl, clave, tamClave, valor, tamValor);
 }
 
-// Corre la secuencia con la primitiva directa (variante 'S' o 'D') y deja el texto
 static void secuenciaDirecta(char variante, void (*secuencia)(tCache*, char*), char *texto)
 {
     tLruS lruS;
@@ -491,8 +466,6 @@ static void secuenciaDirecta(char variante, void (*secuencia)(tCache*, char*), c
     }
 }
 
-// Corre la secuencia por la interfaz y verifica el esperado; si difiere de la primitiva
-// directa, lo agrega al obtenido para que el caso de FALLA
 static void compararConDirecta(int (*crear)(tCache*, unsigned, tCmp), char variante,
                                void (*secuencia)(tCache*, char*), const char *esperado,
                                const char *id, const char *descripcion)
@@ -639,7 +612,6 @@ static void cp23(void)
     vaciarYRecrear(crearCacheDoble, "CP-003-23", "vaciar y volver a crear cap 2 (doble)");
 }
 
-// CP-003-24: esta funcion recibe cualquier tCache y no pregunta cual es
 static void usarCualquiera(tCache *pCache, char *texto)
 {
     char valor[TAM_BUFFER + 1];
@@ -671,15 +643,12 @@ static void cp24(void)
                    obt, "CP-003-24", "la misma funcion con las tres variantes");
 }
 
-// ------------------------------------------------------- funcion de la spec
-
 int pruebas003(void)
 {
     int fallasAntes = cantidadFallas();
 
     printf("== Spec 003: arbol indice e interfaz comun\n");
 
-    // Arbol (T3 a T7)
     cp01();
     cp02();
     cp03();
@@ -696,7 +665,6 @@ int pruebas003(void)
     cp14();
     cp15();
 
-    // Interfaz (T8 y T9)
     cp17();
     cp18();
     cp19();

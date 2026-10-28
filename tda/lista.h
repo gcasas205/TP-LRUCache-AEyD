@@ -26,6 +26,4 @@ int verPrimeroLista(const tLista *pLista, void *info, size_t tamInfo);
 int sacarPorClaveLista(tLista *pLista, const void *clave, void *info, size_t tamInfo, tCmp cmp);
 int sacarUltLista(tLista *pLista, void *info, size_t tamInfo);
 
-
-
 #endif // LISTA_H_INCLUDED

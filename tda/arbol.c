@@ -69,38 +69,38 @@ int buscarArbol(const tArbol *pArbol, const void *clave, void *info, size_t tamI
 
 int eliminarArbol(tArbol *pArbol, const void *clave, tCmp cmp)
 {
-    tArbol *pos;        // direccion del puntero al nodo a eliminar
-    tArbol *menor;      // direccion del puntero al menor del subarbol derecho
-    tNodoA *elim;       // el nodo que finalmente se libera
-    void *auxInfo;      // para el intercambio de info
+    tArbol *pos;
+    tArbol *menor;
+    tNodoA *elim;
+    void *auxInfo;
     size_t auxTam;
 
     pos = buscarNodoArbol(pArbol, clave, cmp);
-    if(!*pos)                       // no hay nodo: la clave no esta
+    if(!*pos)
         return NO_ENCONTRADO;
 
     elim = *pos;
 
-    if(elim->izq && elim->der)      // dos hijos: lo reduzco a 0 o 1 hijo
+    if(elim->izq && elim->der)
     {
         menor = menorNodoArbol(&elim->der);
 
-        auxInfo = elim->info;               // intercambio los punteros info
+        auxInfo = elim->info;
         elim->info = (*menor)->info;
         (*menor)->info = auxInfo;
 
-        auxTam = elim->tamInfo;             // y los tamanos
+        auxTam = elim->tamInfo;
         elim->tamInfo = (*menor)->tamInfo;
         (*menor)->tamInfo = auxTam;
 
-        pos = menor;                        // ahora elimino el menor
+        pos = menor;
         elim = *pos;
     }
 
-    *pos = elim->izq ? elim->izq : elim->der;   // 0 hijos: NULL; 1 hijo: sube el hijo
+    *pos = elim->izq ? elim->izq : elim->der;
 
-    free(elim->info);                           // primero la info...
-    free(elim);                                 // ...despues el nodo
+    free(elim->info);
+    free(elim);
     return EXITO;
 }
 

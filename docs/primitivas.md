@@ -384,8 +384,10 @@ Invariantes: con caché, `aciertos + fallos = posteos` y `lecturas = fallos`; si
     operativo. No toca las métricas.
 - **`static int obtenerPosteo(tCache *pCache, FILE *fpPosteos, tLectorPosteo lector, int id, tPosteo *posteo, tMetricas *pMetricas)`**
   - Hace: `obtenerCache`; si da `EXITO`, `registrarAcierto`. Si no, `registrarFallo`,
-    `lector(fpPosteos, id, posteo)`, `registrarLectura` y `agregarCache`. Siempre `registrarPosteo`.
-  - Devuelve: `EXITO` o el código del lector.
+    `lector(fpPosteos, id, posteo)`, `registrarLectura` y, solo si el lector dio `EXITO`, `agregarCache`.
+    Siempre `registrarPosteo`.
+  - Devuelve: `EXITO` o el código del lector. `simular` sigue con el pedido siguiente aunque no sea
+    `EXITO` (RF-19: un id fuera de rango cuenta como fallo y lectura y no entra en la caché).
 
 ### reporte
 
@@ -396,6 +398,10 @@ Invariantes: con caché, `aciertos + fallos = posteos` y `lecturas = fallos`; si
   - Hace: una fila alineada con `printf` y anchos fijos. `acceso` es "Directo" o "Con seek"; la
     capacidad de "sin caché" se muestra como "-". `altura` la consulta `main_simulador` con
     `alturaIndiceCache` antes de vaciar; con -1 imprime "-".
+- **`void exportarEncabezadoCsv(FILE *fp)`** (agregada el 27/10/2026)
+  - Hace: escribe la primera línea del CSV con los nombres de los 11 campos, separados por `;`, en el
+    mismo orden que `exportarCsv`. `main_simulador` la llama una vez, antes de la primera fila
+    (CP-004-23 pide "encabezado + 27 líneas").
 - **`void exportarCsv(FILE *fp, const char *acceso, const char *lote, const tCache *pCache, unsigned capacidad, int altura, const tMetricas *pMetricas)`**
   - Hace: la misma fila, 11 campos separados por `;` (Excel en español usa coma decimal).
 
@@ -404,14 +410,20 @@ Invariantes: con caché, `aciertos + fallos = posteos` y `lecturas = fallos`; si
 ## Programas — todos
 
 - **`main_generador`**
-  - Hace: `generador <semilla> <usuarios> <grupo_concentrado>`. Valida `argc`; `srand(semilla)` una
-    sola vez; genera `posteos.dat` y los tres lotes en `datos/`.
-  - Devuelve: 0 si todo salió bien; 1 con un mensaje de uso si faltan argumentos o falló un archivo.
+  - Hace: `generador <semilla> <usuarios> <grupo_concentrado>`. Valida `argc` y que los tres sean
+    enteros (con `errno`/`ERANGE`, porque `strtol` satura sin avisar), con usuarios entre
+    `MIN_USUARIOS` (200) y `MAX_USUARIOS` (1.000.000) y G entre 1 y 50000, **antes** de crear
+    cualquier archivo; `srand(semilla)` una sola vez; genera `posteos.dat` y los tres lotes en `datos/`.
+  - Devuelve: 0 si todo salió bien; 1 con un mensaje de uso si un argumento no es válido o falló un
+    archivo.
 - **`main_simulador`**
   - Hace: `simulador [directo | seek | ambos]` (sin argumento, `ambos`). Para cada modo, cada lote, la
     corrida sin caché y cada variante con cada capacidad: crear la caché, `simular` con el lector del
-    modo, consultar la altura, `imprimirFila`, `exportarCsv`, `vaciarCache`.
-  - Devuelve: 0, o 1 si no encontró los archivos o el argumento no es válido.
+    modo, consultar la altura, `imprimirFila`, `exportarCsv`, `vaciarCache`. Si falla crear una caché o
+    una corrida, lo informa por `stderr` (modo, lote, caché, capacidad y código) y sigue con la
+    siguiente.
+  - Devuelve: 0 si todas las corridas salieron bien; 1 si no encontró los archivos, el argumento no es
+    válido o falló alguna corrida (el CSV quedó incompleto).
 - **`main_pruebas`**
   - Hace: llama a `pruebas001()` … `pruebas004()` (una por spec, en `pruebas/`), imprime el total de
     casos OK y FALLA.

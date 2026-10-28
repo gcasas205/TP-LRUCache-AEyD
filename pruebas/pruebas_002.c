@@ -1,7 +1,3 @@
-// Pruebas de la spec 002 (LRU con lista doble e indice). Los IDs y valores son los de
-// specs/002-lru-doble/casos-prueba.md. Los casos 24, 25, 33 y 34 son de revision y no estan aca.
-// Los casos 01 a 23 son los mismos de pruebas_001.c contra las primitivas LruD; cada operacion
-// pasa por un envoltorio (crearV, agregarV, ...) que llama a verificarLruD despues (RF-15).
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,16 +12,12 @@
 #define TAM_TEXTO 256
 #define TAM_BUFFER 32
 
-// Igual en forma al tPosteo de la spec 004, sin depender de dominio/
 typedef struct
 {
     int id;
     char texto[64];
 } tPosteoPrueba;
 
-// ----------------------------------------------------------------- auxiliares
-
-// Compara el int que esta al principio de cada bloque (clave de la entrada)
 static int cmpInt(const void *a, const void *b)
 {
     return *(const int*)a - *(const int*)b;
@@ -36,7 +28,6 @@ static int cmpCadena(const void *a, const void *b)
     return strcmp((const char*)a, (const char*)b);
 }
 
-// Agrega al final de texto lo que sigue, separado por un espacio si texto no esta vacio
 static void anexar(char *texto, const char *agregado)
 {
     if(*texto)
@@ -44,8 +35,6 @@ static void anexar(char *texto, const char *agregado)
     strcat(texto, agregado);
 }
 
-// Nombre de los estados de lista de comun.h. Va aparte de nombreRetorno porque
-// LISTA_DISPONIBLE vale 0, igual que EXITO.
 static const char *nombreEstadoLista(int estado)
 {
     switch(estado)
@@ -61,9 +50,6 @@ static const char *nombreEstadoLista(int estado)
     }
 }
 
-// ------------------------------------------------- consistencia (RF-15)
-
-// Cantidad de veces que verificarLruD no dio 1 desde el ultimo verificarCaso
 static int inconsistencias = 0;
 
 static void comprobar(const tLruD *pLru)
@@ -112,8 +98,6 @@ static void vaciarV(tLruD *pLru)
     comprobar(pLru);
 }
 
-// Como verificarTexto, pero si verificarLruD fallo en alguna operacion del caso lo agrega al
-// texto obtenido (asi el caso da FALLA) y reinicia la cuenta para el caso siguiente
 static void verificarCaso(const char *esperado, const char *obtenido, const char *id,
                           const char *descripcion)
 {
@@ -129,15 +113,11 @@ static void verificarCaso(const char *esperado, const char *obtenido, const char
     inconsistencias = 0;
 }
 
-// ------------------------------------------------- casos compartidos con la 001
-
 static int agregarTexto(tLruD *pLru, int clave, const char *valor)
 {
     return agregarV(pLru, &clave, sizeof(clave), valor, strlen(valor) + 1);
 }
 
-// Para cada clave, en orden, anexa "k-" si esta ausente o "k+valor" si esta presente.
-// Obtener cambia el orden de uso: por eso los casos ponen primero las que esperan ausentes.
 static void presencia(tLruD *pLru, const int *claves, int cant, char *texto)
 {
     char valor[TAM_BUFFER + 1];
@@ -155,7 +135,6 @@ static void presencia(tLruD *pLru, const int *claves, int cant, char *texto)
     }
 }
 
-// Crea la cache con claves 1..cant y valores "A", "B", "C"...
 static void llenarLetras(tLruD *pLru, int cant)
 {
     char valor[2];
@@ -168,8 +147,6 @@ static void llenarLetras(tLruD *pLru, int cant)
         agregarTexto(pLru, i, valor);
     }
 }
-
-// ------------------------------------------------------------------- cache
 
 static void cp01(void)
 {
@@ -545,8 +522,6 @@ static void cp23(void)
                   "cap 100 con 1000 claves: quedan las ultimas 100");
 }
 
-// ------------------------------------------------------ propios de la Parte 2
-
 static void anexarAltura(tLruD *pLru, char *texto)
 {
     char item[24];
@@ -661,8 +636,6 @@ static void cp32(void)
     verificarCaso("EXITO EXITO EXITO altura=0", obt, "CP-002-32", "borrar todo deja el indice vacio");
 }
 
-// ------------------------------------------------------- lista doble (D01 a D10)
-
 static void acumularEntero(void *info, void *contexto)
 {
     char num[16];
@@ -671,7 +644,6 @@ static void acumularEntero(void *info, void *contexto)
     anexar((char*)contexto, num);
 }
 
-// Deja en texto los enteros de pri a ult, separados por espacio
 static void recorridoD(const tListaD *pLista, char *texto)
 {
     *texto = '\0';
@@ -683,7 +655,6 @@ static int insertarEntero(tListaD *pLista, int valor, tPosListaD *pos)
     return insPrinListaD(pLista, &valor, sizeof(valor), pos);
 }
 
-// Inserta 1, 2 y 3 al principio (recorrido 3 2 1); pos[k] queda con la posicion de k
 static void armarTres(tListaD *pLista, tPosListaD pos[4])
 {
     int k;
@@ -693,7 +664,6 @@ static void armarTres(tListaD *pLista, tPosListaD pos[4])
         insertarEntero(pLista, k, &pos[k]);
 }
 
-// Saca el ultimo tres veces y anexa cada valor sacado
 static void sacarTres(tListaD *pLista, char *texto)
 {
     char num[16];
@@ -757,7 +727,6 @@ static void cpD03(void)
     verificarTexto("3 2 1 1 2 3 VACIA", obt, "CP-002-D03", "insertar 1, 2, 3; sacar ultimo cuatro veces");
 }
 
-// D04 a D06: mover una posicion de 3 2 1 al principio
 static void moverYVerificar(int k, const char *esperado, const char *id, const char *descripcion)
 {
     tListaD lista;
@@ -859,15 +828,12 @@ static void cpD10(void)
     verificarTexto("4 0 LISTA_VACIA ult=NULL", obt, "CP-002-D10", "vaciar 4 nodos y despues una vacia");
 }
 
-// ------------------------------------------------------- funcion de la spec
-
 int pruebas002(void)
 {
     int fallasAntes = cantidadFallas();
 
     printf("== Spec 002: LRU con lista doble e indice\n");
 
-    // Lista doble primero (T2 a T4)
     cpD01();
     cpD02();
     cpD03();
@@ -879,7 +845,6 @@ int pruebas002(void)
     cpD09();
     cpD10();
 
-    // Cache: los mismos de la Parte 1 con verificarLruD tras cada operacion (T6 a T8)
     cp01();
     cp02();
     cp03();
@@ -904,7 +869,6 @@ int pruebas002(void)
     cp22();
     cp23();
 
-    // Propios de la Parte 2 (la altura necesita el arbol real: T9)
     cp26();
     cp27();
     cp28();

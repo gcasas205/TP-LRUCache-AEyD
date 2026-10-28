@@ -120,7 +120,6 @@ int obtenerLruD(tLruD *pLru, const void *clave, size_t tamClave, void *valor, si
     tamElem = verInfoListaD(pos, temp, tamClave + tamValor);
     copiarValorEntrada(temp, tamElem, tamClave, valor, tamValor);
 
-
     free(temp);
 
     return EXITO;
@@ -174,5 +173,4 @@ int verificarLruD(const tLruD *pLru)
         return 1;
     return 0;
 }
-
 

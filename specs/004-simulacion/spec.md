@@ -1,6 +1,6 @@
 # Spec 004 — Generador de lotes, simulación e informe (Parte 3)
 
-Estado: borrador
+Estado: implementada
 Dueño: Persona 4
 Depende de: spec 003 (interfaz común); usa las specs 001 y 002 a través de ella
 
@@ -48,7 +48,8 @@ Generador:
   tiene id i y un texto de menos de 141 caracteres terminado en `'\0'`.
 - RF-02: CUANDO se ejecuta dos veces con la misma semilla y los mismos parámetros, EL SISTEMA genera
   archivos idénticos byte a byte; con otra semilla, los lotes concentrado y disperso son distintos.
-- RF-03: EL SISTEMA genera cada lote con la cantidad de usuarios pedida (al menos 200, sin máximo fijo),
+- RF-03: EL SISTEMA genera cada lote con la cantidad de usuarios pedida (entre 200 y 1.000.000; el máximo evita
+  archivos de varios GB por un valor mal escrito, agregado el 27/10/2026),
   nombres de hasta 14 caracteres terminados en `'\0'` y 20 ids por feed, todos entre 0 y 49999.
 - RF-04: CUANDO genera el lote concentrado, EL SISTEMA toma todos los ids de un grupo de G posteos
   (G es un parámetro).
@@ -84,6 +85,9 @@ Simulación:
   calentamiento no cuenta en las lecturas ni en el tiempo.
 - RF-18: EL SISTEMA permite elegir el modo de acceso (directo, con seek o ambos) al ejecutar el
   simulador; el modo solo afecta las lecturas del archivo e identifica cada fila de la tabla y del CSV.
+- RF-19: SI un feed trae un id que no está en el archivo de posteos, ENTONCES EL SISTEMA lo cuenta como
+  fallo y como lectura (se intentó leer), no lo agrega a la caché, sigue con el pedido siguiente y la
+  corrida termina con `EXITO`. El generador nunca produce ids fuera de rango (decidido el 27/10/2026).
 
 Informe:
 - RF-16: EL SISTEMA (el grupo) entrega un informe de no más de 3 páginas con tablas o gráficos de las
@@ -126,8 +130,7 @@ Informe:
 - `/revisar 004` y `/validar 004` con `VEREDICTO: APROBADO`.
 
 ## Dudas abiertas
-- [NECESITA ACLARACIÓN] ¿Qué hace el simulador si un feed trae un id fuera de rango? Propuesta: lo cuenta
-  como fallo, no lo agrega a la caché y sigue. El generador nunca lo produce.
-- [NECESITA ACLARACIÓN] Valores definitivos: capacidades (propuesta 10, 100, 1000, 5000), G del
-  concentrado (propuesta 300) y cantidad de usuarios (propuesta 50000, o sea un millón de pedidos;
-  ajustar hasta cumplir RNF-04 en la máquina del informe).
+- (ninguna) Resueltas el 27/10/2026: id fuera de rango → RF-19. Parámetros: capacidades 10, 100,
+  1000 y 5000; G = 300; semilla 2026. Usuarios: **80000** (1,6 millones de pedidos). Con 50000, la
+  corrida del lote ordenado sin caché en modo directo duró 0,72 s en la máquina del informe (el acceso
+  secuencial es barato) y no cumplía RNF-04; se subió a 80000 para respetarlo (27/10/2026).
