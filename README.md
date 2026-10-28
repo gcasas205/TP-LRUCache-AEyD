@@ -37,6 +37,7 @@ Un cambio de requisitos va primero a la spec, después al plan y las tareas, y p
 | `docs/constitution.md` | 7 principios innegociables |
 | `docs/arquitectura.md` | Capas, dependencias permitidas, decisiones, reparto y defensa |
 | `docs/primitivas.md` | Firma, comportamiento, retorno y stub de cada primitiva |
+| `docs/recorrido.md` | Cómo funciona el programa de punta a punta, con las funciones reales |
 | `specs/` | Una carpeta por spec |
 | `AGENTS.md`, `MEMORY.md` | Instrucciones para los agentes y memoria del proyecto |
 | `CLAUDE.md` | Solo importa `AGENTS.md`, para que Claude Code lo cargue siempre |
