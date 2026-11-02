@@ -2,53 +2,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Saca el nodo de la cadena sin liberarlo. Cada extremo se resuelve por separado:
-// si no tiene anterior era el primero (mueve pri); si no tiene siguiente era el ultimo (mueve ult).
-static void desengancharNodoD(tListaD *pLista, tNodoD *nodo)
-{
-    if(nodo->ant)
-        nodo->ant->sig = nodo->sig;
-    else
-        pLista->pri = nodo->sig;
-
-    if(nodo->sig)
-        nodo->sig->ant = nodo->ant;
-    else
-        pLista->ult = nodo->ant;
-}
-
 void crearListaD(tListaD *pLista)
 {
-    pLista->pri = NULL;
-    pLista->ult = NULL;
+    pLista->pri = pLista->ult = NULL;
 }
 
 int listaVaciaD(const tListaD *pLista)
 {
-    return (pLista->pri)?LISTA_DISPONIBLE:LISTA_VACIA;
+    return pLista->pri?LISTA_DISPONIBLE:LISTA_VACIA;
 }
 
 int insPrinListaD(tListaD *pLista, const void *info, size_t tamInfo, tPosListaD *pos)
 {
     tNodoD *nue;
-    *pos = NULL;
-
     nue = (tNodoD*)malloc(sizeof(tNodoD));
     if(!nue)
+    {
+        *pos = NULL;
         return ERROR_MALLOC;
+    }
 
     nue->info = malloc(tamInfo);
     if(!nue->info)
     {
+        *pos = NULL;
         free(nue);
         return ERROR_MALLOC;
     }
 
     memcpy(nue->info, info, tamInfo);
     nue->tamInfo = tamInfo;
-
     nue->ant = NULL;
+
     nue->sig = pLista->pri;
+
     if(pLista->pri)
         pLista->pri->ant = nue;
     else
@@ -56,6 +43,7 @@ int insPrinListaD(tListaD *pLista, const void *info, size_t tamInfo, tPosListaD 
     pLista->pri = nue;
 
     *pos = nue;
+
     return EXITO;
 }
 
@@ -70,18 +58,17 @@ size_t verInfoListaD(tPosListaD pos, void *info, size_t tamInfo)
 
 int actualizarInfoListaD(tPosListaD pos, const void *info, size_t tamInfo)
 {
-    tNodoD *nodo = (tNodoD*)pos;
-    void *nuevo;
+    void *nue;
+    tNodoD *nodoPos = (tNodoD*)pos;
 
-    // primero el bloque nuevo: si falla, el nodo conserva su info anterior
-    nuevo = malloc(tamInfo);
-    if(!nuevo)
+    nue = malloc(tamInfo);
+    if(!nue)
         return ERROR_MALLOC;
 
-    memcpy(nuevo, info, tamInfo);
-    free(nodo->info);
-    nodo->info = nuevo;
-    nodo->tamInfo = tamInfo;
+    memcpy(nue, info, tamInfo);
+    free(nodoPos->info);
+    nodoPos->tamInfo = tamInfo;
+    nodoPos->info = nue;
 
     return EXITO;
 }
@@ -89,12 +76,14 @@ int actualizarInfoListaD(tPosListaD pos, const void *info, size_t tamInfo)
 void moverAlPrinListaD(tListaD *pLista, tPosListaD pos)
 {
     tNodoD *nodo = (tNodoD*)pos;
-
     if(nodo == pLista->pri)
         return;
 
-    // como no era el primero, la lista tiene al menos otro nodo y pri no queda en NULL
-    desengancharNodoD(pLista, nodo);
+    nodo->ant->sig = nodo->sig;
+    if(nodo->sig)
+        nodo->sig->ant = nodo->ant;
+    else
+        pLista->ult = nodo->ant;
 
     nodo->ant = NULL;
     nodo->sig = pLista->pri;
@@ -104,22 +93,30 @@ void moverAlPrinListaD(tListaD *pLista, tPosListaD pos)
 
 int sacarNodoListaD(tListaD *pLista, tPosListaD pos, void *info, size_t tamInfo)
 {
-    tNodoD *elim = (tNodoD*)pos;
+    tNodoD *nodo = (tNodoD*)pos;
 
-    desengancharNodoD(pLista, elim);
+    if(nodo->ant)
+        nodo->ant->sig = nodo->sig;
+    else
+        pLista->pri = nodo->sig;
+
+    if(nodo->sig)
+        nodo->sig->ant = nodo->ant;
+    else
+        pLista->ult = nodo->ant;
 
     if(info)
-        memcpy(info, elim->info, MIN(elim->tamInfo, tamInfo));
+        memcpy(info, nodo->info, MIN(nodo->tamInfo,tamInfo));
 
-    free(elim->info);
-    free(elim);
+    free(nodo->info);
+    free(nodo);
 
     return EXITO;
 }
 
 int verUltListaD(const tListaD *pLista, void *info, size_t tamInfo)
 {
-    if(!pLista->ult)
+    if(listaVaciaD(pLista) == LISTA_VACIA)
         return VACIA;
 
     memcpy(info, pLista->ult->info, MIN(pLista->ult->tamInfo, tamInfo));
@@ -129,7 +126,7 @@ int verUltListaD(const tListaD *pLista, void *info, size_t tamInfo)
 
 int sacarUltListaD(tListaD *pLista, void *info, size_t tamInfo)
 {
-    if(!pLista->ult)
+    if(listaVaciaD(pLista) == LISTA_VACIA)
         return VACIA;
 
     return sacarNodoListaD(pLista, pLista->ult, info, tamInfo);
@@ -137,29 +134,27 @@ int sacarUltListaD(tListaD *pLista, void *info, size_t tamInfo)
 
 void recorrerListaD(const tListaD *pLista, tAccion accion, void *contexto)
 {
-    tNodoD *act = pLista->pri;
-
-    while(act)
+    tNodoD *nodo = pLista->pri;
+    while(nodo)
     {
-        accion(act->info, contexto);
-        act = act->sig;
+        accion(nodo->info, contexto);
+        nodo = nodo->sig;
     }
 }
 
 int vaciarListaD(tListaD *pLista)
 {
-    tNodoD *elim;
     int cont = 0;
-
-    while(pLista->pri)
+    tNodoD *nodo = pLista->pri;
+    while(nodo)
     {
-        elim = pLista->pri;
-        pLista->pri = elim->sig;
+        tNodoD *elim = nodo;
+        nodo = nodo->sig;
         free(elim->info);
         free(elim);
         cont++;
     }
-    pLista->ult = NULL;
+    pLista->pri = pLista->ult = NULL;
 
     return cont;
 }

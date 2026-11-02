@@ -1,5 +1,3 @@
-// Pruebas de la spec 001 (LRU sobre lista simple). Los IDs y valores son los de
-// specs/001-lru-simple/casos-prueba.md. Los casos 24, 25 y 26 son de revision y no estan aca.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,16 +19,12 @@ typedef struct
     char nombre[10];
 } tReg;
 
-// Igual en forma al tPosteo de la spec 004, sin depender de dominio/
 typedef struct
 {
     int id;
     char texto[64];
 } tPosteoPrueba;
 
-// ----------------------------------------------------------------- auxiliares
-
-// Compara el int que esta al principio de cada bloque (clave de la entrada o de tReg)
 static int cmpInt(const void *a, const void *b)
 {
     return *(const int*)a - *(const int*)b;
@@ -41,7 +35,6 @@ static int cmpCadena(const void *a, const void *b)
     return strcmp((const char*)a, (const char*)b);
 }
 
-// Agrega al final de texto lo que sigue, separado por un espacio si texto no esta vacio
 static void anexar(char *texto, const char *agregado)
 {
     if(*texto)
@@ -49,8 +42,6 @@ static void anexar(char *texto, const char *agregado)
     strcat(texto, agregado);
 }
 
-// Nombre de los estados de lista de comun.h. Va aparte de nombreRetorno porque
-// LISTA_DISPONIBLE vale 0, igual que EXITO.
 static const char *nombreEstadoLista(int estado)
 {
     switch(estado)
@@ -65,8 +56,6 @@ static const char *nombreEstadoLista(int estado)
             return "DESCONOCIDO";
     }
 }
-
-// ---- lista
 
 static const char *nombreDe(int clave)
 {
@@ -87,7 +76,6 @@ static int insertarReg(tLista *pLista, int clave)
     return insPrinLista(pLista, &reg, sizeof(reg));
 }
 
-// Arma la lista para que el recorrido quede en el orden de claves[]
 static void armarLista(tLista *pLista, const int *claves, int cant)
 {
     int i;
@@ -105,22 +93,17 @@ static void acumularClave(void *info, void *contexto)
     anexar((char*)contexto, num);
 }
 
-// Deja en texto las claves del primero al ultimo, separadas por espacio
 static void recorrido(const tLista *pLista, char *texto)
 {
     *texto = '\0';
     recorrerLista(pLista, acumularClave, texto);
 }
 
-// ---- cache
-
 static int agregarTexto(tLruS *pLru, int clave, const char *valor)
 {
     return agregarLruS(pLru, &clave, sizeof(clave), valor, strlen(valor) + 1);
 }
 
-// Para cada clave, en orden, anexa "k-" si esta ausente o "k+valor" si esta presente.
-// Obtener cambia el orden de uso: por eso los casos ponen primero las que esperan ausentes.
 static void presencia(tLruS *pLru, const int *claves, int cant, char *texto)
 {
     char valor[TAM_BUFFER + 1];
@@ -138,7 +121,6 @@ static void presencia(tLruS *pLru, const int *claves, int cant, char *texto)
     }
 }
 
-// Crea la cache con claves 1..cant y valores "A", "B", "C"...
 static void llenarLetras(tLruS *pLru, int cant)
 {
     char valor[2];
@@ -151,8 +133,6 @@ static void llenarLetras(tLruS *pLru, int cant)
         agregarTexto(pLru, i, valor);
     }
 }
-
-// ------------------------------------------------------------------- cache
 
 static void cp01(void)
 {
@@ -528,8 +508,6 @@ static void cp23(void)
                    "cap 100 con 1000 claves: quedan las ultimas 100");
 }
 
-// ------------------------------------------------------- primitivas internas
-
 static void cpL01(void)
 {
     tLista lista;
@@ -595,7 +573,6 @@ static void cpL04(void)
     verificarTexto("NO_ENCONTRADO {0 XXX}", item, "CP-001-L04", "buscar 9 no toca el destino");
 }
 
-// L05 a L08: llevar una clave al principio de 1 2 3
 static void llevarYVerificar(int clave, const char *esperado, const char *id,
                              const char *descripcion)
 {
@@ -617,7 +594,7 @@ static void cpL09(void)
     tLista lista;
     tReg reg;
     char obt[TAM_TEXTO] = "";
-    char item[TAM_TEXTO + 64];  // entra rec completo mas el resto del formato
+    char item[TAM_TEXTO + 64];
     char rec[TAM_TEXTO];
     int claves[] = {1, 2, 3, 4};
     int aSacar[] = {1, 3, 4};
@@ -765,15 +742,12 @@ static void cpL15(void)
     verificarTexto("LISTA_DISPONIBLE LISTA_DISPONIBLE [1 2 3]", obt, "CP-001-L15", "lista llena en vacia y en 1 2 3, sin modificarla");
 }
 
-// ------------------------------------------------------- funcion de la spec
-
 int pruebas001(void)
 {
     int fallasAntes = cantidadFallas();
 
     printf("== Spec 001: LRU sobre lista simple\n");
 
-    // Primitivas internas primero (T3 a T6)
     cpL01();
     cpL02();
     cpL03();
@@ -790,7 +764,6 @@ int pruebas001(void)
     cpL14();
     cpL15();
 
-    // Cache (T7 a T9)
     cp01();
     cp02();
     cp03();

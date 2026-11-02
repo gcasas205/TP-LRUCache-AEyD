@@ -1,4 +1,5 @@
 #include "lru_simple.h"
+#include "entrada.h"
 #include <stdlib.h>
 #include <string.h>
 

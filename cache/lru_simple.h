@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include "comun.h"
 #include "lista.h"
-#include "entrada.h"
 
 typedef struct
 {

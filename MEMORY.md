@@ -3,12 +3,14 @@
 Estado del proyecto y decisiones que afectan a todo el repo. Máximo ~50 líneas: resumir o borrar lo que
 ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
 
-## Estado actual (25/10/2026)
+## Estado actual (27/10/2026)
 - **Spec 001 implementada y validada** (`/revisar` y `/validar` APROBADO, 41 casos en OK). Falta que el
   grupo apruebe la spec y los dos cambios de contrato de hoy (`listaLlena`/`LISTA_*` y la precarga de
   `obtenerLruS`), pasarlos al doc compartido y marcar `tasks.md`.
-- Specs 002 a 004 en `Estado: borrador`, sin código: sus `.c`/`.h` existen vacíos. Primer paso de cada
-  una: su T1 (congelar los `.h` según `docs/primitivas.md`, con stubs).
+- **Spec 002 implementada y validada** (27/10): `/revisar` y `/validar` APROBADO; `bin/pruebas` da 78 OK
+  (001 + 002) con el árbol real, y el sanitizer en Linux sin reportes.
+- **Spec 003 implementada y validada** (27/10): árbol e interfaz `tCache`; `bin/pruebas` da 104 OK.
+- **Spec 004** en curso (27/10).
 - Code::Blocks: `TP-LRUCache.workspace` y `pruebas.cbp`, `generador.cbp`, `simulador.cbp` en la raíz.
 
 ## Decisiones (y por qué)
@@ -42,13 +44,23 @@ ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
   cuenta al medir en la spec 004).
 - **Compilación de pruebas con los `.c` listados uno por uno (25/10/2026):** un `.c` vacío rompe la
   configuración de la cátedra. Cada spec suma sus `.c` a las tres líneas de `pruebas` de `AGENTS.md`.
+- **Spec 004 (27/10/2026):** un id fuera de rango cuenta como fallo y lectura, no entra en la caché y la
+  corrida sigue (RF-19). Parámetros: capacidades 10, 100, 1000 y 5000; G = 300; semilla 2026; 80000
+  usuarios (con 50000 el ordenado sin caché duraba 0,72 s y no cumplía RNF-04). Autoría (principio 7, 27/10/2026):
+  un agente escribió, con permiso de Gonzalo, `dominio/posteo.c`/`.h`, `dominio/usuario.c`/`.h`,
+  `sim/metricas.c`/`.h`, `sim/reporte.c`/`.h`, `sim/generador.h`, `sim/simulador.h`,
+  `apps/main_generador.c` y `apps/main_simulador.c` (incluidos los arreglos de `/revisar 004`: tope de
+  usuarios con `errno` y errores informados en el simulador). Gonzalo escribió `sim/generador.c` y
+  `sim/simulador.c`. Es una excepción al principio 7: el grupo decidió que **una persona se adueñe**
+  de ese código antes de la defensa (leerlo, entenderlo, reescribir lo que haga falta) y que se anote
+  acá quién y cuándo. Pendiente: [ ] asignar quién; [ ] revisado.
 - **Códigos de retorno en `tda/comun.h`:** la cátedra suele llamarlo `retornos.h`; lo que se corrige es
   usar los nombres simbólicos.
 
 ## Dudas abiertas del grupo
-- [ ] Qué hace el simulador con un id fuera de rango en un feed (spec 004).
-- [ ] Capacidades definitivas, G del concentrado y cantidad de usuarios medida en la máquina del informe
-  (spec 004).
+- [ ] Si falla el `malloc` del buffer en `obtener`, `obtenerLruD` deja el orden de uso como estaba y
+  `obtenerLruS` ya movió el elemento. Unificar las dos (RF-11 de la 003 pide los mismos resultados) o
+  dejarlo como decisión.
 
 ## Aprendizajes y errores a evitar
 - En MinGW `RAND_MAX` es 32767: un solo `rand()` nunca genera ids mayores; combinar dos.
@@ -61,5 +73,5 @@ ya no aporte. Las decisiones de un solo módulo van en el `plan.md` de su spec.
   `/revisar`). Los casts sí van pegados: `(tNodo*)`.
 - En `listaLlena` el truco "liberar y preguntar si quedó `NULL`" vale solo con dos variables (nodo y
   bloque): `nodo->info` después del `free` es leer memoria liberada.
-- MinGW no trae sanitizer y su `gcc` no está en el PATH de Git Bash. Después de cambiar `AGENTS.md`, salir
+- MinGW no trae sanitizer (`pruebas_asan` se corre en Linux) y su `gcc` no está en el PATH de Git Bash. Después de cambiar `AGENTS.md`, salir
   y volver a abrir Claude Code: la sesión vieja sigue con los comandos anteriores.

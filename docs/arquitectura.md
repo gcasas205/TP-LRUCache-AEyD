@@ -134,7 +134,7 @@ use un solo estilo (ver `MEMORY.md`).
 | `generador` | Genera posteos y lotes con semilla; una estrategia por tipo de lote | `generarPosteos`, `generarLote`, estrategias `feedConcentrado`, `feedDisperso`, `feedOrdenado` | `posteo`, `usuario` |
 | `metricas` | Contadores y tiempos de una corrida | `iniciarMetricas`, `registrarAcierto`, `registrarFallo`, `registrarLectura`, `registrarUsuario`, `registrarPosteo`, `fijarTiempo`, `promedioPorPosteo`, `promedioPorUsuario` | — |
 | `simulador` | Recorre el lote y pide cada posteo a la caché o al archivo | `simular` | `cache`, `posteo`, `usuario`, `metricas` |
-| `reporte` | Imprime la tabla de resultados y un CSV para el informe | `imprimirEncabezado`, `imprimirFila`, `exportarCsv` | `metricas`, `cache` |
+| `reporte` | Imprime la tabla de resultados y un CSV para el informe | `imprimirEncabezado`, `imprimirFila`, `exportarEncabezadoCsv`, `exportarCsv` | `metricas`, `cache` |
 
 ### Capa 4 — Programas (`apps/`)
 
@@ -154,13 +154,14 @@ permite medir Parte 1, Parte 2 y "sin caché" con el mismo código.
 | Campo | Tipo (en palabras) | Para qué |
 | --- | --- | --- |
 | `impl` | `void*` a una `tLruS`, una `tLruD` o `NULL` | El estado real de la caché elegida |
-| `agregar`, `obtener`, `borrar`, `vaciar` | Punteros a función que reciben `void *impl` | Despacho a la implementación |
-| `nombre` | Cadena fija ("Lista simple", "Lista doble + ABB", "Sin caché") | Lo usa `reporte` |
+| `agregar`, `obtener`, `borrar`, `vaciar`, `altura` | Punteros a función que reciben `void *impl` (`altura`, `const void *impl`) | Despacho a la implementación |
+| `nombre` | Cadena fija ("Lista simple", "Lista doble + ABB", "Sin cache", sin tilde) | Lo usa `reporte` |
 
 Los punteros a función apuntan a **adaptadores** chiquitos dentro de `cache.c`, que castean `impl` y
 llaman a `agregarLruS` o `agregarLruD`. `cache.c` es el único archivo que conoce a las dos
 implementaciones. Para "sin caché", `obtener` siempre devuelve `NO_ENCONTRADO` y `agregar` no hace nada:
-el simulador no necesita un `if` especial.
+el simulador no necesita un `if` especial. La altura del índice también va por un adaptador (`altura`):
+la Parte 2 devuelve la del árbol y las otras dos, -1, sin preguntar qué variante es (27/10/2026).
 
 ### Formato de cada entrada: la clave va primero
 
@@ -235,9 +236,9 @@ los `.dat`, el simulador los lee.
 | --- | --- | --- |
 | Concentrado | Ids sorteados de un grupo chico de posteos "populares" | Muchos aciertos aun con caché chica |
 | Disperso | Ids sorteados en todo el rango 0 a 49999 | Casi todo fallos: la caché solo agrega costo |
-| Ordenado | El pedido número j recibe el id ⌊j × 50000 / pedidos⌋: crecen parejo en todo el rango y, con 50000 usuarios, cada id se repite 20 veces seguidas | Casi todo aciertos, pero el ABB degenera en una cadena del largo de la capacidad; informar su altura |
+| Ordenado | El pedido número j recibe el id ⌊j × 50000 / pedidos⌋: crecen parejo en todo el rango y, con 80000 usuarios, cada id se repite 32 veces seguidas | Casi todo aciertos, pero el ABB degenera en una cadena del largo de la capacidad; informar su altura |
 
-La cantidad de usuarios (mínimo 200; propuesta 50000) y el tamaño del grupo popular se pasan por
+La cantidad de usuarios (entre 200 y 1.000.000; el informe usa 80000) y el tamaño del grupo popular se pasan por
 `argv`, para generar variantes sin recompilar. El cálculo del ordenado va en `double`: `j × 50000`
 desborda el `long` de 32 bits de MinGW.
 
@@ -289,8 +290,8 @@ Lo que hay que tener en cuenta para el informe:
   llamada al sistema). Solo se paga en los fallos, que es lo que la caché ahorra, y se paga igual en las
   tres variantes. Se reportan los dos modos y el informe lo declara.
 - **Hacen falta muchos pedidos.** Con 200 usuarios (4000 pedidos) una corrida dura pocos milisegundos y
-  `clock()` en Windows mide de a 1 ms. Con 50000 usuarios (un millón de pedidos) la corrida sin caché
-  dura alrededor de un segundo. La regla: subir los usuarios hasta que la corrida sin caché en modo
+  `clock()` en Windows mide de a 1 ms. Con 50000 usuarios (un millón de pedidos) la corrida del lote ordenado sin caché
+  duró 0,72 s en la máquina del informe; con 80000 (1,6 millones de pedidos) dura 1,13 s. La regla: subir los usuarios hasta que la corrida sin caché en modo
   directo dure al menos 1 s en la máquina del informe.
 - **Dónde deja de convenir la Parte 1 (estimación):** si un nodo cuesta unos 5 ns con el comparador,
   recorrer unos 200 elementos cuesta lo mismo que una lectura directa, y unos 300 lo mismo que una

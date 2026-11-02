@@ -5,17 +5,12 @@
 #include "comun.h"
 #include "lista_doble.h"
 #include "arbol.h"
-#include "entrada.h"
 
-// La lista es duena de los datos ([clave][valor]) y lleva el orden de uso.
-// El arbol es dueno solo de su indice: cada info es [clave][tPosListaD], una copia de la clave
-// y la posicion del nodo de la lista.
 typedef struct
 {
     tListaD lista;
     tArbol indice;
-    unsigned capacidad;
-    unsigned cantidad;
+    unsigned capacidad, cantidad;
     tCmp cmp;
 }tLruD;
 
